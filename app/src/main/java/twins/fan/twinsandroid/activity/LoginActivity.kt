@@ -2,6 +2,7 @@ package twins.fan.twinsandroid.activity
 
 import android.animation.Animator
 import android.content.ContentValues.TAG
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -34,6 +35,10 @@ class LoginActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         loginBinding.loginLoginButton.setOnClickListener(loginListener)
+        loginBinding.loginAccountButton.setOnClickListener(OnClickListener {
+            val its = Intent(this.applicationContext, AccountActivity::class.java)
+            startActivity(its)
+        })
     }
 
     private val loginListener = OnClickListener{
@@ -43,7 +48,6 @@ class LoginActivity : AppCompatActivity() {
 
         lifecycleScope.launch{
             val username = loginBinding.loginUsername.text.toString()
-            Log.i(TAG, "username:$username")
             try {
                 val result = loginViewModel.loginProcess(
                     username,

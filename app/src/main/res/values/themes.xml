@@ -12,5 +12,10 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
+        <!-- no head Title -->
+        <item name="windowNoTitle">true</item>
+        <!--full screen-->
+        <item name="android:windowFullscreen">false</item>
     </style>
 </resources>

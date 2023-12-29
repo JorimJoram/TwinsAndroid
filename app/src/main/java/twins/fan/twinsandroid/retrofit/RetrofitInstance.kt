@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import twins.fan.twinsandroid.retrofit.api.AccountApi
 import twins.fan.twinsandroid.retrofit.api.LoginApi
 import java.util.concurrent.TimeUnit
 
@@ -24,4 +25,5 @@ object RetrofitInstance {
     }
 
     val loginApi: LoginApi by lazy { retrofitInit.create(LoginApi::class.java) }
+    val accountApi: AccountApi by lazy { retrofitInit.create(AccountApi::class.java) }
 }

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragment.account.AccountFragmentTel">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tel_headTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:text="전화번호를\n입력해주세요"
+                android:textColor="@color/black"
+                android:textSize="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/tel_telInput"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="230dp"
+                android:hint="-을 빼고 입력해주세요"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tel_headTitle" />
+
+            <Button
+                android:id="@+id/tel_sendCodeButton"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:text="인증"
+                android:layout_marginTop="230dp"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toEndOf="@+id/tel_telInput"
+                app:layout_constraintTop_toTopOf="@+id/tel_headTitle" />
+
+            <EditText
+                android:id="@+id/tel_telCode"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:hint="인증번호를 입력해주세요"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tel_telInput" />
+
+            <Button
+                android:id="@+id/tel_telCodeCheck"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="450dp"
+                android:layout_marginEnd="30dp"
+                android:text="완료"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/tel_lottieView"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="false"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/loading_lottie"
+                android:visibility="gone" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</layout>
