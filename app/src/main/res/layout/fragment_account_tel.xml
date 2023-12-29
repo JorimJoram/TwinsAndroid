@@ -20,10 +20,11 @@
                 android:id="@+id/tel_headTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="140dp"
                 android:text="전화번호를\n입력해주세요"
-                android:textColor="@color/black"
+                android:textColor="@color/twins_red"
                 android:textSize="30dp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,8 +32,9 @@
                 android:id="@+id/tel_telInput"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="230dp"
+                android:layout_marginTop="190dp"
                 android:hint="-을 빼고 입력해주세요"
+                android:backgroundTint="@color/twins_red"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tel_headTitle" />
 
@@ -41,7 +43,7 @@
                 android:layout_width="90dp"
                 android:layout_height="wrap_content"
                 android:text="인증"
-                android:layout_marginTop="230dp"
+                android:layout_marginTop="190dp"
                 android:layout_marginStart="10dp"
                 app:layout_constraintStart_toEndOf="@+id/tel_telInput"
                 app:layout_constraintTop_toTopOf="@+id/tel_headTitle" />
@@ -52,8 +54,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:hint="인증번호를 입력해주세요"
+                android:backgroundTint="@color/twins_red"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tel_telInput" />
+
+            <TextView
+                android:id="@+id/tel_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tel_telCode"
+                android:textColor="@color/twins_red"
+                android:textSize="15sp"/>
 
             <Button
                 android:id="@+id/tel_telCodeCheck"

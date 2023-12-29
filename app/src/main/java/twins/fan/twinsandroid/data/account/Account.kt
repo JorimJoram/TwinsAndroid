@@ -7,7 +7,7 @@ data class Account(
     var username: String,
     var password:String,
     var tel: String,
-    val role:String? = "",
+    var role:String? = "",
     val createdDate: String? = LocalDateTime.now().toString()
 ){
     companion object{

@@ -18,10 +18,11 @@
                 android:id="@+id/username_headTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="140dp"
                 android:text="아이디를\n입력해주세요"
-                android:textColor="@color/black"
+                android:textColor="@color/twins_red"
                 android:textSize="30dp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,10 +30,21 @@
                 android:id="@+id/username_usernameInput"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="250dp"
+                android:layout_marginTop="230dp"
                 android:hint="영어와 숫자를 포함한 4자 이상"
+                android:backgroundTint="@color/twins_red"
+                android:textColorHighlight="@color/twins_red"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/username_headTitle" />
+
+            <TextView
+                android:id="@+id/username_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/username_usernameInput"
+                android:textColor="@color/twins_red"
+                android:textSize="15sp"/>
 
             <Button
                 android:id="@+id/username_checkButton"
@@ -48,8 +60,6 @@
                 android:id="@+id/username_lottieView"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:lottie_autoPlay="false"

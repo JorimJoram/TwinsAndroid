@@ -33,11 +33,9 @@ class AccountFragmentPassword : Fragment() {
     private val checkPassword = OnClickListener{
         val password = binding.passwordPasswordInput.text.toString()
         val confirm = binding.passwordPasswordConfirm.text.toString()
-        //TODO("정규식을 이용해서 영문 + 숫자 + 특수문자 -> 8자 이상 들어갔는지 확인")
         val passwordRegex = Regex("^(?=.*[a-zA-Z])(?=.*[!@#\$%^*+=-])(?=.*[0-9]).{8,15}\$")
         if(!passwordRegex.matches(password))
             showFailure(-1)
-        //TODO("비밀번호 확인이 되었는지 확인")
         else{
             if(password == confirm)
                 nextFragment(password)
@@ -52,7 +50,7 @@ class AccountFragmentPassword : Fragment() {
             -2 -> "비밀번호가 서로 일치하지 않습니다."
             else -> "다시 시도해주세요"
         }
-        Toast.makeText(this.context, msg, Toast.LENGTH_LONG).show() //TODO("내부 글로 바꿔주세요")
+        binding.passwordMsg.text = msg
     }
 
     private fun nextFragment(password:String){

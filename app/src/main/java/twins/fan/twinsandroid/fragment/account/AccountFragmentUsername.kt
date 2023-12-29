@@ -51,7 +51,7 @@ class AccountFragmentUsername : Fragment() {
             -3 -> "인터넷 연결 확인 후 다시 시도해주세요."
             else -> "다시 시도해주세요"
         }
-        Toast.makeText(this.context, msg, Toast.LENGTH_LONG).show() //TODO("내부 글로 바꿔주세요")
+        binding.usernameMsg.text = msg
     }
 
     private fun checkDup(username:String){
