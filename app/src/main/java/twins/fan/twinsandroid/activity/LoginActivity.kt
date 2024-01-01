@@ -56,12 +56,12 @@ class LoginActivity : AppCompatActivity() {
                 if(result.isSuccessful) {
                     checkResult(result.headers(), result.body()!!)
                 }else{
-                    showFailCode()
+                    showFailCode(java.lang.Exception("isNotSuccessful"))
                 }
             }catch (e: SocketTimeoutException){
-                showFailCode()
+                showFailCode(e)
             }catch (e: ProtocolException){
-                showFailCode()
+                showFailCode(e)
             }finally {
                 loadingAnimation.cancelAnimation()
                 loadingAnimation.visibility = View.GONE
@@ -69,17 +69,18 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun showFailCode() {
-        Toast.makeText(this.applicationContext, "Server connection failed", Toast.LENGTH_LONG).show()
+    private fun showFailCode(e:Exception) {
+        loginBinding.usernameMsg.text = "${e.message}"//"인터넷 연결을 확인해주세요"
+        //Toast.makeText(this.applicationContext, "Server connection failed", Toast.LENGTH_LONG).show()
     }
 
     private fun checkResult(headers: Headers, body: HashMap<String, Any>) {
         if(body.containsKey("exception")){
             val exceptionCode:String = when(body["exception"]){
-                "BandInputException" -> "아이디와 비밀번호를 확인해주세요"
+                "BadInputException" -> "아이디와 비밀번호를 확인해주세요"
                 else -> "계정을 다시 확인해주세요"
             }
-            Toast.makeText(this.applicationContext, exceptionCode, Toast.LENGTH_LONG).show()
+            loginBinding.usernameMsg.text = exceptionCode
         }else{
             val cookieHeader = headers["Set-Cookie"]?.split(";")?.get(0)
             val authInstance = AuthenticationInfo.getInstance()

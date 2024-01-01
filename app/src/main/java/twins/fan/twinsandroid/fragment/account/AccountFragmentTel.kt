@@ -44,6 +44,7 @@ class AccountFragmentTel : Fragment() {
         sendCodeButton.setOnClickListener(isSend)
         checkCodeButton.setOnClickListener(checkCode)
 
+        binding.telBackButton.setOnClickListener(backListener)
     }
 
     private val isSend = OnClickListener{
@@ -139,7 +140,7 @@ class AccountFragmentTel : Fragment() {
 
     private fun countDown(){
         val time = 5L;
-        val timer = object: CountDownTimer(time  * 1000, 1000){
+        val timer = object: CountDownTimer(time * 60 * 1000, 1000){
             override fun onTick(remainTime: Long) {
                 binding.telSendCodeButton.isEnabled = false
                 val min = (remainTime / 1000) / 60
@@ -167,5 +168,12 @@ class AccountFragmentTel : Fragment() {
 
         val dialog = builder.create()
         dialog.show()
+    }
+
+    private val backListener = OnClickListener {
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        val passwordFragment = AccountFragmentPassword()
+        transaction!!.replace(R.id.account_frameLayout, passwordFragment)
+        transaction.commit()
     }
 }

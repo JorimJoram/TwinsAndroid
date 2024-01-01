@@ -10,9 +10,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragment.account.AccountFragmentUsername">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/username_backButton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@color/white"
+                android:src="@drawable/arrow_back_24"
+                android:layout_marginTop="30dp"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/username_headTitle"
@@ -30,6 +41,8 @@
                 android:id="@+id/username_usernameInput"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="text"
                 android:layout_marginTop="230dp"
                 android:hint="영어와 숫자를 포함한 4자 이상"
                 android:backgroundTint="@color/twins_red"
@@ -60,12 +73,15 @@
                 android:id="@+id/username_lottieView"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:lottie_autoPlay="false"
                 app:lottie_loop="true"
-                app:lottie_rawRes="@raw/loading_lottie"
-                android:visibility="gone"/>
+                app:lottie_rawRes="@raw/loading_lottie" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>

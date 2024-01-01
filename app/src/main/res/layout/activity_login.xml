@@ -8,17 +8,26 @@
 
     <EditText
         android:id="@+id/login_username"
-        android:layout_width="300dp"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
+
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:nextFocusDown="@id/login_password"
+
+        android:layout_marginTop="250dp"
+        android:layout_marginStart="20dp"
+        android:backgroundTint="@color/twins_red"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/login_password"
-        android:layout_width="300dp"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/twins_red"
+        app:layout_constraintStart_toStartOf="@id/login_username"
         app:layout_constraintTop_toTopOf="@id/login_username" />
 
     <Button
@@ -30,6 +39,24 @@
         android:text="로그인"
         app:layout_constraintStart_toEndOf="@id/login_password"
         app:layout_constraintTop_toTopOf="@id/login_username" />
+
+    <TextView
+        android:id="@+id/username_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/login_password"
+        app:layout_constraintTop_toBottomOf="@id/login_accountButton"
+        android:textSize="15sp"
+        android:textColor="@color/twins_red"/>
+
+    <TextView
+        android:id="@+id/login_accountButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="회원가입"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="@id/login_password"
+        app:layout_constraintTop_toBottomOf="@id/login_password" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/login_lottieView"
@@ -43,14 +70,5 @@
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/loading_lottie"
         android:visibility="gone"/>
-
-    <Button
-        android:id="@+id/login_accountButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="go"
-        app:layout_constraintStart_toStartOf="@id/login_password"
-        app:layout_constraintTop_toTopOf="@id/login_password" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

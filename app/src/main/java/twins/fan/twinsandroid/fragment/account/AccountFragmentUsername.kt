@@ -1,5 +1,6 @@
 package twins.fan.twinsandroid.fragment.account
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.compose.material3.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
@@ -31,6 +33,21 @@ class AccountFragmentUsername : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.usernameCheckButton.setOnClickListener(checkUsername)
+        binding.usernameBackButton.setOnClickListener(backListener)
+    }
+
+    private val backListener = OnClickListener {
+        val builder = AlertDialog.Builder(this.context)
+        builder.setTitle("회원가입 취소").setMessage("다시 로그인화면으로 돌아가시겠습니까?")
+        builder.setPositiveButton("예"){
+                dialog, which -> activity?.finish()
+        }
+        builder.setNegativeButton("아니오"){
+                dialog, which -> dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 
     private val checkUsername = OnClickListener {

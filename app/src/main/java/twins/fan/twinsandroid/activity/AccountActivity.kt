@@ -36,7 +36,7 @@ class AccountActivity : AppCompatActivity() {
     private val callBack = object:OnBackPressedCallback(true){
         override fun handleOnBackPressed() {
             val builder = AlertDialog.Builder(this@AccountActivity)
-            builder.setTitle("회원가입 종료").setMessage("지금까지 작성하신 내용이 모두 종료됩니다.\n계속 진행하시겠습니까?")
+            builder.setTitle("회원가입 종료").setMessage("지금까지 작성하신 내용이 모두 삭제됩니다.\n계속 진행하시겠습니까?")
             builder.setPositiveButton("예"){
                 dialog, which -> finish()
             }

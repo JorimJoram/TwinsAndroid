@@ -15,7 +15,6 @@ import twins.fan.twinsandroid.viewmodel.AccountViewModel
 
 class AccountFragmentPassword : Fragment() {
     private lateinit var binding: FragmentAccountPasswordBinding
-    private val accountViewModel = AccountViewModel()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,12 +27,13 @@ class AccountFragmentPassword : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.passwordPasswordCheck.setOnClickListener(checkPassword)
+        binding.passwordBackButton.setOnClickListener(backListener)
     }
 
     private val checkPassword = OnClickListener{
         val password = binding.passwordPasswordInput.text.toString()
         val confirm = binding.passwordPasswordConfirm.text.toString()
-        val passwordRegex = Regex("^(?=.*[a-zA-Z])(?=.*[!@#\$%^*+=-])(?=.*[0-9]).{8,15}\$")
+        val passwordRegex = Regex("^(?=.*[a-zA-Z])(?=.*[!@#\$%^*+=-])(?=.*[0-9])(?!.*\\s).{8,15}\$")
         if(!passwordRegex.matches(password))
             showFailure(-1)
         else{
@@ -46,7 +46,7 @@ class AccountFragmentPassword : Fragment() {
 
     private fun showFailure(code: Int){
         val msg:String = when(code){
-            -1 -> "영문, 숫자, 특수문자를 모두 포함한 8자 이상을 입력해주세요"
+            -1 -> "영문, 숫자, 특수문자를 포함한 8자 이상을 입력해주세요\n(스페이스 제외)"
             -2 -> "비밀번호가 서로 일치하지 않습니다."
             else -> "다시 시도해주세요"
         }
@@ -60,6 +60,13 @@ class AccountFragmentPassword : Fragment() {
         val transaction = activity?.supportFragmentManager?.beginTransaction()
         val telFragment = AccountFragmentTel()
         transaction!!.replace(R.id.account_frameLayout, telFragment)
+        transaction.commit()
+    }
+
+    private val backListener = OnClickListener {
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        val usernameFragment = AccountFragmentUsername()
+        transaction!!.replace(R.id.account_frameLayout, usernameFragment)
         transaction.commit()
     }
 }
