@@ -47,6 +47,5 @@ class AccountActivity : AppCompatActivity() {
             val dialog = builder.create()
             dialog.show()
         }
-
     }
 }

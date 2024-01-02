@@ -88,7 +88,9 @@ class LoginActivity : AppCompatActivity() {
             authInstance.authorities = body["authorities"] as List<String>?
             authInstance.jSessionId = cookieHeader?.split("=")?.get(1)
 
-            Toast.makeText(this.applicationContext, "LoginSuccess\n$authInstance", Toast.LENGTH_LONG).show()
+            val it = Intent(this, MainActivity::class.java)
+            startActivity(it)
+            finish()
         }
     }
 }
