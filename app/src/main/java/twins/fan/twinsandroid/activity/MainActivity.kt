@@ -1,15 +1,13 @@
 package twins.fan.twinsandroid.activity
 
-import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.databinding.ActivityMainBinding
 import twins.fan.twinsandroid.fragment.main.MainFragment
 import twins.fan.twinsandroid.fragment.main.MyAccountFragment
-import twins.fan.twinsandroid.fragment.main.TestFragment
+import twins.fan.twinsandroid.fragment.main.GalleryFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mainBinding: ActivityMainBinding
@@ -44,7 +42,7 @@ class MainActivity : AppCompatActivity() {
                         .commitAllowingStateLoss()
                 }
                 R.id.menu_gallery -> {
-                    fragmentTransaction.replace(R.id.main_frameLayout, TestFragment())
+                    fragmentTransaction.replace(R.id.main_frameLayout, GalleryFragment())
                         .addToBackStack("TEST")
                         .commitAllowingStateLoss()
                 }
