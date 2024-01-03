@@ -1,6 +1,8 @@
 package twins.fan.twinsandroid.fragment.main
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -24,13 +26,15 @@ class GalleryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_gallery, container, false)
-        getAndPutData()
 
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
+
+        getAndPutData()
+
         val bottomBar = activity?.findViewById<BottomNavigationView>(R.id.main_bottom_nav)
         bottomBar?.menu?.findItem(R.id.menu_gallery)?.isChecked = true
     }
@@ -41,8 +45,14 @@ class GalleryFragment : Fragment() {
         binding.gallListRecyclerView.layoutManager = LinearLayoutManager(this.requireContext())
 
         lifecycleScope.launch {
-            gallViewModel.setPaging().collectLatest { pagingData ->
-                adapter.submitData(pagingData)
+            try{
+                gallViewModel.setPaging().collectLatest { pagingData ->
+                    adapter.submitData(pagingData)
+                }
+            }catch (e:Exception){
+                Log.e(TAG, "error: ${e.message}")
+            }finally {
+
             }
         }
     }
