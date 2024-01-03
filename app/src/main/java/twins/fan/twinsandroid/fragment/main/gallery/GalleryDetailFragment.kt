@@ -6,12 +6,16 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import twins.fan.twinsandroid.R
+import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.databinding.FragmentGalleryDetailBinding
 import twins.fan.twinsandroid.viewmodel.GallViewModel
 
@@ -43,10 +47,7 @@ class GalleryDetailFragment : Fragment() {
             val data = gallViewModel.getById(gallId)!!
             Log.i(TAG, "getDetail: $data")
             if(data.id == -1L){
-                Log.i(TAG, "getDetail: -1 dd")
-                val fragmentManager = requireActivity().supportFragmentManager
-                fragmentManager.beginTransaction().remove(GalleryDetailFragment()).commit()
-                fragmentManager.popBackStack()
+                backToList()
             }
             val date = if(data.modifiedDate != null) data.modifiedDate+"(수정됨)" else data.createdDate
             binding.gallDetailAccountUsername.text = data.account.username
@@ -54,9 +55,42 @@ class GalleryDetailFragment : Fragment() {
             binding.gallDetailTitle.text = data.title
             binding.gallDetailContent.text = data.content
 
+            if(AuthenticationInfo.getInstance().username == data.account.username){
+                val delete = binding.gallDetailDelete
+                delete.visibility = View.VISIBLE
+                delete.setOnClickListener(deleteGallery)
+            }
+
             loadingAnimation.cancelAnimation()
             loadingAnimation.visibility = View.GONE
         }
+    }
 
+    private val deleteGallery = OnClickListener{
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("게시글을 삭제하시겠습니까?").setMessage("작성하셨던 게시글이 삭제됩니다.")
+        builder.setPositiveButton("예"){
+            _, _ -> deleteProcess()
+        }
+        builder.setNegativeButton("아니오"){
+            dialog, _ -> dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun backToList(){
+        val fragmentManager = requireActivity().supportFragmentManager
+        fragmentManager.beginTransaction().remove(GalleryDetailFragment()).commit()
+        fragmentManager.popBackStack()
+    }
+
+    private fun deleteProcess(){
+        lifecycleScope.launch {
+            gallViewModel.deleteById(gallId)
+            Toast.makeText(requireContext(), "게시글을 삭제하였습니다.", Toast.LENGTH_LONG).show()
+
+            backToList()
+        }
     }
 }

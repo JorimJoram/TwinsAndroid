@@ -38,10 +38,10 @@ class AccountActivity : AppCompatActivity() {
             val builder = AlertDialog.Builder(this@AccountActivity)
             builder.setTitle("회원가입 종료").setMessage("지금까지 작성하신 내용이 모두 삭제됩니다.\n계속 진행하시겠습니까?")
             builder.setPositiveButton("예"){
-                dialog, which -> finish()
+                _, _ -> finish()
             }
             builder.setNegativeButton("아니오"){
-                dialog, which -> dialog.dismiss()
+                dialog, _ -> dialog.dismiss()
             }
 
             val dialog = builder.create()

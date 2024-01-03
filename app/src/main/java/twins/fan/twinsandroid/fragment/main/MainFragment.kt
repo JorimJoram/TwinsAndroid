@@ -41,7 +41,7 @@ class MainFragment : Fragment() {
         val transaction = activity?.supportFragmentManager?.beginTransaction()
         val myAccountFragment = MyAccountFragment()
         transaction!!.replace(R.id.main_frameLayout, myAccountFragment)
-        transaction.addToBackStack("main")
+        transaction.addToBackStack("ACCOUNT")
         transaction.commitAllowingStateLoss()
     }
 
