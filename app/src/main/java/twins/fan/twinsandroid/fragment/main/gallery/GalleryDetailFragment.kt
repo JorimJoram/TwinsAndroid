@@ -13,16 +13,19 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.databinding.FragmentGalleryDetailBinding
+import twins.fan.twinsandroid.viewmodel.AccountViewModel
 import twins.fan.twinsandroid.viewmodel.GallViewModel
 
 class GalleryDetailFragment : Fragment() {
     private lateinit var binding: FragmentGalleryDetailBinding
     private var gallId: Long = -1L
     private val gallViewModel = GallViewModel()
+    private val accountViewModel = AccountViewModel()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,6 +57,10 @@ class GalleryDetailFragment : Fragment() {
             binding.gallDetailDate.text = "${ date.split("T")[0].replace("-", ".") } ${ date.split("T")[1].split(".")[0] }"
             binding.gallDetailTitle.text = data.title
             binding.gallDetailContent.text = data.content
+
+            Glide.with(requireContext())
+                .load("http://49.173.81.98:8080"+accountViewModel.getAccountImage(data.account.username)!!.path)
+                .into(binding.gallDetailAccountImage) //TODO("첫술에 배부를 리가...")
 
             if(AuthenticationInfo.getInstance().username == data.account.username){
                 val delete = binding.gallDetailDelete

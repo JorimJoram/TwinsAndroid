@@ -9,4 +9,5 @@ class AccountViewModel {
     suspend fun isUsernameDup(username:String) = accountApi.checkDup(username).awaitResponse().body()
     suspend fun sendCode(tel:String) = accountApi.sendCode(tel).awaitResponse().body()
     suspend fun createAccount(account: Account) = accountApi.createAccount(account).awaitResponse()
+    suspend fun getAccountImage(username: String) = accountApi.getAccountImage(username).awaitResponse().body()
 }

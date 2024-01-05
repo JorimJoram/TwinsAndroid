@@ -6,6 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 import twins.fan.twinsandroid.data.account.Account
+import twins.fan.twinsandroid.data.account.AccountImage
 
 interface AccountApi {
     @GET("/account/api/username-dup")
@@ -14,4 +15,7 @@ interface AccountApi {
     fun sendCode(@Query("tel")tel: String): Call<String>
     @POST("/account/api/create")
     fun createAccount(@Body account: Account): Call<Account>
+
+    @GET("/account/api/image")
+    fun getAccountImage(@Query("username") username:String): Call<AccountImage>
 }
