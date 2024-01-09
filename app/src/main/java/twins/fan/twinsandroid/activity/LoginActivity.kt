@@ -70,7 +70,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showFailCode(e:Exception) {
-        loginBinding.usernameMsg.text = "${e.message}"//"인터넷 연결을 확인해주세요"
+        when(e){
+            is SocketTimeoutException -> loginBinding.usernameMsg.text = "서버가 아직 열리지 않았습니다.\n잠시후에 다시 이용해주세요."
+            is ProtocolException -> loginBinding.usernameMsg.text = "인터넷 연결을 다시 확인해주세요"
+            else -> loginBinding.usernameMsg.text = "다시 시도해주세요"
+        }
         //Toast.makeText(this.applicationContext, "Server connection failed", Toast.LENGTH_LONG).show()
     }
 

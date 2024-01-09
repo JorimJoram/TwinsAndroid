@@ -1,11 +1,7 @@
 package twins.fan.twinsandroid.fragment.main
 
-import android.app.Activity
-import android.content.ContentValues
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,17 +9,20 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.launch
 import twins.fan.twinsandroid.R
-import twins.fan.twinsandroid.activity.MainActivity
 import twins.fan.twinsandroid.databinding.FragmentMainBinding
+import twins.fan.twinsandroid.fragment.main.game.GameSearchFragment
+import twins.fan.twinsandroid.viewmodel.LoginViewModel
 
 
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
     private var isClicked = false
+    private val loginViewModel=LoginViewModel()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,9 +38,9 @@ class MainFragment : Fragment() {
 
     private val testListener = OnClickListener{
         val transaction = activity?.supportFragmentManager?.beginTransaction()
-        val myAccountFragment = MyAccountFragment()
-        transaction!!.replace(R.id.main_frameLayout, myAccountFragment)
-        transaction.addToBackStack("ACCOUNT")
+        val gameSearchFragment = GameSearchFragment()
+        transaction!!.replace(R.id.main_frameLayout, gameSearchFragment)
+        transaction.addToBackStack("GAME_SEARCH")
         transaction.commitAllowingStateLoss()
     }
 
@@ -68,7 +67,9 @@ class MainFragment : Fragment() {
      */
     override fun onDestroy() {
         super.onDestroy()
-        //TODO("로그아웃은 여기서 진행해야합니다")
+        lifecycleScope.launch {
+            loginViewModel.logoutProcess() //TODO("로그아웃은 여기서 진행해야합니다")
+        }
     }
 
     override fun onResume() {
