@@ -35,6 +35,7 @@ class GameListAdapter(
     private val gameList: List<GameRecord>?,
     private val userVisitList: List<String>
 ):BaseAdapter() {
+
     private val gameViewModel = GameViewModel()
     private val userInfo = AuthenticationInfo.getInstance()
     override fun getCount(): Int {
@@ -90,13 +91,41 @@ class GameListAdapter(
     private fun putPitchResult(view: View, winner: String, loser: String) {
         val homeScore = view.findViewById<TextView>(R.id.game_list_item_homeScore).text.toString().toInt()
         val visitScore = view.findViewById<TextView>(R.id.game_list_item_visitScore).text.toString().toInt()
-        if(homeScore > visitScore){
-            view.findViewById<TextView>(R.id.game_list_item_homePitchResult).text = "승: $winner"
-            view.findViewById<TextView>(R.id.game_list_item_homePitchResult).setTextColor(Color.parseColor("#204B9B"))
-            view.findViewById<TextView>(R.id.game_list_item_visitPitchResult).text = "패: $loser"
-            view.findViewById<TextView>(R.id.game_list_item_visitPitchResult).setTextColor(Color.parseColor("#B32653"))
+
+        setPitchResult(
+            view.findViewById(R.id.game_list_item_homePitchResult),
+            getPitchText(homeScore, visitScore, winner, loser),
+            getPitchColor(homeScore, visitScore, "#204B9B", "#B32653")
+        )
+
+        setPitchResult(
+            view.findViewById(R.id.game_list_item_visitPitchResult),
+            getPitchText(visitScore, homeScore, winner, loser),
+            getPitchColor(visitScore, homeScore, "#B32653", "#204B9B")
+        )
+    }
+
+    private fun getPitchText(score1: Int, score2: Int, winner: String, loser: String): String {
+        return when {
+            score1 > score2 -> "승: $winner"
+            score1 < score2 -> "패: $loser"
+            else -> "무"
         }
     }
+
+    private fun getPitchColor(score1: Int, score2: Int, winColor: String, loseColor: String): Int {
+        return when {
+            score1 > score2 -> Color.parseColor(winColor)
+            score1 < score2 -> Color.parseColor(loseColor)
+            else -> Color.BLACK
+        }
+    }
+
+    private fun setPitchResult(textView: TextView, resultText: String, color: Int) {
+        textView.text = resultText
+        textView.setTextColor(color)
+    }
+
 
     private fun putScore(view: View, isLGHome: Boolean, lgScore: List<String>, versusScore: List<String>) {
         val visitScore:String
