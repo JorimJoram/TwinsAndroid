@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.widget.SwitchCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import twins.fan.twinsandroid.R
@@ -48,9 +50,16 @@ class GameListAdapter(
         final.text = game.final.replace("-", "\n")
         putLogo(view, game.versusTeam, game.stadium == "잠실종합운동장")
         putScore(view, game.stadium == "잠실종합운동장", lgScoreSplit, versusScoreSplit)
-        view.findViewById<TextView>(R.id.game_list_item_date).text = "${ dateFormat(game.gameDate.substring(0, game.gameDate.length - 1)) } ${game.startTime} ~ ${game.endTime}"
         putPitchResult(view, game.winner, game.loser)
 
+        view.findViewById<TextView>(R.id.game_list_item_date).text = "${ dateFormat(game.gameDate.substring(0, game.gameDate.length - 1)) } ${game.startTime} ~ ${game.endTime}"
+
+        val switch = view.findViewById<SwitchCompat>(R.id.game_list_item_switch)
+        switch.isChecked = true
+        switch.setOnCheckedChangeListener { buttonView, isChecked ->
+            val msg = if(isChecked) "안녕" else "잘가"
+            Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+        }
 
         return view
     }
