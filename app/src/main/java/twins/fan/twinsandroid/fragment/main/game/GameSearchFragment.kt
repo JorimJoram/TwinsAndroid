@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.adapter.GameListAdapter
+import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.databinding.FragmentGameSearchBinding
 import twins.fan.twinsandroid.viewmodel.GameViewModel
 import java.time.LocalDateTime
@@ -44,7 +45,12 @@ class GameSearchFragment : Fragment() {
         lifecycleScope.launch {
             //val gameList = gameViewModel.getGameListByMonth("${year.substring(2,4)}$month")
             val gameList = gameViewModel.getGameListByMonth("2308")
-            val myAdapter = GameListAdapter(requireContext(), gameList)
+            val userVisitList = gameViewModel.getUserVisit(AuthenticationInfo.getInstance().username!!)!!
+            val visitDateList = mutableListOf<String>()
+
+            userVisitList.forEach { visitDateList.add(it.visitDate) }
+
+            val myAdapter = GameListAdapter(GameSearchFragment(),requireContext(), gameList, visitDateList)
             listView.adapter = myAdapter
         }
     }

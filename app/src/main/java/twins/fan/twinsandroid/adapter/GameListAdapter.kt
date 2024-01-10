@@ -12,10 +12,17 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import kotlinx.coroutines.launch
 import twins.fan.twinsandroid.R
+import twins.fan.twinsandroid.data.account.Account
+import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.data.game.GameRecord
+import twins.fan.twinsandroid.data.game.UserVisit
+import twins.fan.twinsandroid.fragment.main.game.GameSearchFragment
+import twins.fan.twinsandroid.viewmodel.GameViewModel
 import java.lang.StringBuilder
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -23,9 +30,13 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 class GameListAdapter(
+    private val fragment:GameSearchFragment,
     private val context: Context,
-    private val gameList: List<GameRecord>?
+    private val gameList: List<GameRecord>?,
+    private val userVisitList: List<String>
 ):BaseAdapter() {
+    private val gameViewModel = GameViewModel()
+    private val userInfo = AuthenticationInfo.getInstance()
     override fun getCount(): Int {
         return gameList!!.size
     }
@@ -54,13 +65,25 @@ class GameListAdapter(
 
         view.findViewById<TextView>(R.id.game_list_item_date).text = "${ dateFormat(game.gameDate.substring(0, game.gameDate.length - 1)) } ${game.startTime} ~ ${game.endTime}"
 
-        val switch = view.findViewById<SwitchCompat>(R.id.game_list_item_switch)
-        switch.isChecked = true
-        switch.setOnCheckedChangeListener { buttonView, isChecked ->
-            val msg = if(isChecked) "안녕" else "잘가"
-            Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
-        }
+        Log.d(TAG, "visitList: $game")
 
+        val switch = view.findViewById<SwitchCompat>(R.id.game_list_item_switch)
+        val visitSet = HashSet(userVisitList)
+        if(visitSet.contains(game.gameDate)){
+            switch.isChecked = true
+        }
+        switch.setOnCheckedChangeListener { buttonView, isChecked ->
+            fragment.lifecycleScope.launch {
+                if(isChecked){
+                    if(gameViewModel.createUserVisit(UserVisit(account=Account(username=userInfo.username!!, password="", tel=""), visitDate = game.gameDate))!!.id!!.toInt() != -1){
+                        Toast.makeText(context, "성공", Toast.LENGTH_LONG).show()
+                    }
+                }else{
+                    gameViewModel.deleteUserVisit(userInfo.username!!, game.gameDate)
+                    Toast.makeText(context, "id:${game.id} username:${userInfo.username} / ${game.gameDate}의 관람이 삭제되었습니다.", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
         return view
     }
 
