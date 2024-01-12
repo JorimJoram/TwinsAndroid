@@ -1,7 +1,9 @@
 package twins.fan.twinsandroid.fragment.main
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +16,10 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 import twins.fan.twinsandroid.R
+import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.databinding.FragmentMainBinding
 import twins.fan.twinsandroid.fragment.main.game.GameSearchFragment
+import twins.fan.twinsandroid.viewmodel.GameViewModel
 import twins.fan.twinsandroid.viewmodel.LoginViewModel
 
 
@@ -23,6 +27,7 @@ class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
     private var isClicked = false
     private val loginViewModel=LoginViewModel()
+    private val gameViewModel = GameViewModel()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -68,7 +73,7 @@ class MainFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         lifecycleScope.launch {
-            loginViewModel.logoutProcess() //TODO("로그아웃은 여기서 진행해야합니다")
+            loginViewModel.logoutProcess()
         }
     }
 
@@ -76,5 +81,17 @@ class MainFragment : Fragment() {
         super.onResume()
         val bottomBar = activity?.findViewById<BottomNavigationView>(R.id.main_bottom_nav)
         bottomBar?.menu?.findItem(R.id.menu_main)?.isChecked = true
+
+        putMyData()
+    }
+
+    private fun putMyData(){
+        val userInfo = AuthenticationInfo.getInstance()
+        lifecycleScope.launch{
+            val data = gameViewModel.getTotalDetailData(userInfo.username!!)!!
+            val filterByGames = data.filter { it.ab >= (8*3.1).toInt() }// && it.avg.toDouble() > 0.300 }
+            val sortedByAvg = filterByGames.sortedByDescending { it.point }
+            Log.d(TAG, "putMyData: $sortedByAvg")
+        }
     }
 }

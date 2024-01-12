@@ -101,7 +101,7 @@ class GameListAdapter(
         setPitchResult(
             view.findViewById(R.id.game_list_item_visitPitchResult),
             getPitchText(visitScore, homeScore, winner, loser),
-            getPitchColor(visitScore, homeScore, "#B32653", "#204B9B")
+            getPitchColor(visitScore, homeScore, "#204B9B", "#B32653")
         )
     }
 
@@ -151,6 +151,13 @@ class GameListAdapter(
         when(versusTeam){
             "삼성" -> imgPath = R.raw.lions
             "키움" -> imgPath = R.raw.heroes
+            "롯데" -> imgPath = R.raw.giants
+            "두산" -> imgPath = R.raw.bears
+            "KT"   -> imgPath = R.raw.wiz
+            "SSG"  -> imgPath = R.raw.landers
+            "한화" -> imgPath = R.raw.eagles
+            "기아" -> imgPath = R.raw.tigers
+            "NC"   -> imgPath = R.raw.dinos
         }
         when(isLGHome){
             true -> {

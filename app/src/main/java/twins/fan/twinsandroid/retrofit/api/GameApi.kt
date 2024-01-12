@@ -7,6 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 import twins.fan.twinsandroid.data.game.GameRecord
+import twins.fan.twinsandroid.data.game.TotalDetailRecord
 import twins.fan.twinsandroid.data.game.UserVisit
 
 interface GameApi {
@@ -14,6 +15,8 @@ interface GameApi {
     fun getGameListByMonth(@Query("date")date: String): Call<List<GameRecord>>
     @GET("/game/api/visit/list")
     fun getUserVisitList(@Query("username")username: String): Call<List<UserVisit>>
+    @GET("/game/api/total")
+    fun getUserTotalData(@Query("username")username:String): Call<List<TotalDetailRecord>>
     @POST("/game/api/visit/create")
     fun createUserVisit(@Body userVisit: UserVisit): Call<UserVisit>
     @DELETE("/game/api/visit/delete")
