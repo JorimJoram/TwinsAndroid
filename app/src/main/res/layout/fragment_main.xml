@@ -12,61 +12,17 @@
         android:layout_height="match_parent"
         tools:context=".fragment.main.MainFragment">
 
-        <!-- TODO: Update blank fragment layout -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/main_myVisitContainer"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/main_testButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30sp"
-                android:layout_marginEnd="30sp"
-                android:layout_marginTop="30sp"
+                android:text="test"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/main_visitWinHead"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="승"
-                    android:textSize="30sp"
-                    android:layout_marginStart="10sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-                <TextView
-                    android:id="@+id/main_visitLoseHead"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="패"
-                    android:textSize="30sp"
-                    android:layout_marginStart="30dp"
-                    app:layout_constraintStart_toEndOf="@id/main_visitWinHead"
-                    app:layout_constraintTop_toTopOf="parent" />
-                <TextView
-                    android:id="@+id/main_visitRateHead"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="승률"
-                    android:textSize="30sp"
-                    android:layout_marginStart="30dp"
-                    app:layout_constraintStart_toEndOf="@id/main_visitLoseHead"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-                <TextView
-                    android:id="@+id/main_lastVisitHead"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="마지막 직관"
-                    android:textSize="23sp"
-                    app:layout_constraintStart_toStartOf="@id/main_visitWinHead"
-                    app:layout_constraintTop_toBottomOf="@id/main_visitWinHead" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

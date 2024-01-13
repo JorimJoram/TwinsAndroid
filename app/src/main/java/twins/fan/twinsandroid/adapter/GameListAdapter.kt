@@ -12,6 +12,7 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
+import androidx.compose.ui.text.font.Typeface
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -59,7 +60,7 @@ class GameListAdapter(
         val lgScoreSplit = game.lgScore.split(",")
         val versusScoreSplit = game.versusScore.split(",")
 
-        final.text = game.final.replace("-", "\n")
+        final.text = game.final.split("_").let {parts -> if (parts.size >= 2) "${parts[0]}\n${parts[1]}" else parts[0] }
         putLogo(view, game.versusTeam, game.stadium == "잠실종합운동장")
         putScore(view, game.stadium == "잠실종합운동장", lgScoreSplit, versusScoreSplit)
         putPitchResult(view, game.winner, game.loser)
@@ -70,18 +71,16 @@ class GameListAdapter(
 
         val switch = view.findViewById<SwitchCompat>(R.id.game_list_item_switch)
         val visitSet = HashSet(userVisitList)
-        if(visitSet.contains(game.gameDate)){
-            switch.isChecked = true
-        }
+        if(visitSet.contains(game.gameDate)){ switch.isChecked = true }
         switch.setOnCheckedChangeListener { buttonView, isChecked ->
             fragment.lifecycleScope.launch {
                 if(isChecked){
                     if(gameViewModel.createUserVisit(UserVisit(account=Account(username=userInfo.username!!, password="", tel=""), visitDate = game.gameDate))!!.id!!.toInt() != -1){
-                        Toast.makeText(context, "성공", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "등록되었습니다.", Toast.LENGTH_LONG).show()
                     }
                 }else{
                     gameViewModel.deleteUserVisit(userInfo.username!!, game.gameDate)
-                    Toast.makeText(context, "id:${game.id} username:${userInfo.username} / ${game.gameDate}의 관람이 삭제되었습니다.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "등록이 취소되었습니다.", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -89,8 +88,11 @@ class GameListAdapter(
     }
 
     private fun putPitchResult(view: View, winner: String, loser: String) {
-        val homeScore = view.findViewById<TextView>(R.id.game_list_item_homeScore).text.toString().toInt()
-        val visitScore = view.findViewById<TextView>(R.id.game_list_item_visitScore).text.toString().toInt()
+        val homeScoreView = view.findViewById<TextView>(R.id.game_list_item_homeScore)
+        val visitScoreView = view.findViewById<TextView>(R.id.game_list_item_visitScore)
+
+        val homeScore = homeScoreView.text.toString().toInt()
+        val visitScore = visitScoreView.text.toString().toInt()
 
         setPitchResult(
             view.findViewById(R.id.game_list_item_homePitchResult),
@@ -103,6 +105,9 @@ class GameListAdapter(
             getPitchText(visitScore, homeScore, winner, loser),
             getPitchColor(visitScore, homeScore, "#204B9B", "#B32653")
         )
+
+        homeScoreView.typeface = if (homeScore > visitScore) android.graphics.Typeface.DEFAULT_BOLD else android.graphics.Typeface.DEFAULT
+        visitScoreView.typeface = if (homeScore > visitScore) android.graphics.Typeface.DEFAULT else android.graphics.Typeface.DEFAULT_BOLD
     }
 
     private fun getPitchText(score1: Int, score2: Int, winner: String, loser: String): String {
@@ -125,7 +130,6 @@ class GameListAdapter(
         textView.text = resultText
         textView.setTextColor(color)
     }
-
 
     private fun putScore(view: View, isLGHome: Boolean, lgScore: List<String>, versusScore: List<String>) {
         val visitScore:String

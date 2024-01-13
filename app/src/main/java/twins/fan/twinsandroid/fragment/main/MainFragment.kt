@@ -38,7 +38,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.testButton.setOnClickListener(testListener)
+        binding.mainTestButton.setOnClickListener(testListener)
     }
 
     private val testListener = OnClickListener{

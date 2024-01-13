@@ -1,7 +1,6 @@
 package twins.fan.twinsandroid.fragment.main.gallery
 
 import android.content.ContentValues.TAG
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment

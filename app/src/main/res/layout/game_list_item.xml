@@ -32,8 +32,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/game_list_item_homeLogo"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -46,6 +46,7 @@
             android:text="test"
             android:textSize="10sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/game_list_item_homeLogo"
             app:layout_constraintStart_toStartOf="@id/game_list_item_homeLogo"
             app:layout_constraintTop_toBottomOf="@id/game_list_item_homeLogo" />
 
@@ -56,6 +57,7 @@
             android:text="loser"
             android:textSize="10sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/game_list_item_visitLogo"
             app:layout_constraintStart_toStartOf="@id/game_list_item_visitLogo"
             app:layout_constraintTop_toBottomOf="@id/game_list_item_visitLogo"/>
 
@@ -63,6 +65,7 @@
             android:id="@+id/game_list_item_final"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,6 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:textSize="30sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/game_list_item_visitLogo"
             app:layout_constraintTop_toTopOf="parent" />
