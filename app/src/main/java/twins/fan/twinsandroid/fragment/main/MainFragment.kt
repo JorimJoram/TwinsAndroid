@@ -13,10 +13,17 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 import twins.fan.twinsandroid.R
+import twins.fan.twinsandroid.adapter.BatterMainListAdapter
+import twins.fan.twinsandroid.adapter.MainViewPagerAdapter
 import twins.fan.twinsandroid.data.account.AuthenticationInfo
+import twins.fan.twinsandroid.data.game.GameRecord
+import twins.fan.twinsandroid.data.game.TotalDetailRecord
+import twins.fan.twinsandroid.data.game.UserVisit
 import twins.fan.twinsandroid.databinding.FragmentMainBinding
 import twins.fan.twinsandroid.fragment.main.game.GameSearchFragment
 import twins.fan.twinsandroid.viewmodel.GameViewModel
@@ -28,17 +35,21 @@ class MainFragment : Fragment() {
     private var isClicked = false
     private val loginViewModel=LoginViewModel()
     private val gameViewModel = GameViewModel()
+
+    private lateinit var batterDetailDataList:List<TotalDetailRecord>
+    private lateinit var userVisitResultList:List<String>
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
-        return binding.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.mainTestButton.setOnClickListener(testListener)
+        Glide.with(requireContext())
+            .load(R.raw.twins)
+            .into(binding.mainWinRateTeamImage)
+
+        return binding.root
     }
 
     private val testListener = OnClickListener{
@@ -49,49 +60,72 @@ class MainFragment : Fragment() {
         transaction.commitAllowingStateLoss()
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        isClicked = false
-        requireActivity().onBackPressedDispatcher.addCallback(this, backButtonEvent)
-
-    }
-
     private val backButtonEvent = object: OnBackPressedCallback(true){
         override fun handleOnBackPressed() {
             if(isClicked){
                 requireActivity().finishAffinity()
+                lifecycleScope.launch { loginViewModel.logoutProcess() }
             }
             isClicked = true
             Toast.makeText(requireContext(), "종료하시려면 한 번 더 눌러주세요", Toast.LENGTH_LONG).show()
         }
     }
 
-    /**
-     * 진짜 최후의 순간에 나오는 부분
-     *  == 여기서 로그아웃을 시키는거
-     */
-    override fun onDestroy() {
-        super.onDestroy()
-        lifecycleScope.launch {
-            loginViewModel.logoutProcess()
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.mainWinRateContainer.setOnClickListener(testListener)
     }
 
     override fun onResume() {
         super.onResume()
+
+        isClicked = false
+        requireActivity().onBackPressedDispatcher.addCallback(this, backButtonEvent)
+
         val bottomBar = activity?.findViewById<BottomNavigationView>(R.id.main_bottom_nav)
         bottomBar?.menu?.findItem(R.id.menu_main)?.isChecked = true
 
-        putMyData()
+        getMyData()
+
+        //binding.mainViewPager.adapter = MainViewPagerAdapter(getViewPagerItem())
+        //binding.mainViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
     }
 
-    private fun putMyData(){
+    private fun getViewPagerItem(): List<View> {
+        return listOf<View>(
+            LayoutInflater.from(requireContext()).inflate(R.layout.view_pager_item1, null),
+            LayoutInflater.from(requireContext()).inflate(R.layout.view_pager_item2, null),
+        )
+    }
+
+    private fun getMyData(){
         val userInfo = AuthenticationInfo.getInstance()
         lifecycleScope.launch{
-            val data = gameViewModel.getTotalDetailData(userInfo.username!!)!!
-            val filterByGames = data.filter { it.ab >= (8*3.1).toInt() }// && it.avg.toDouble() > 0.300 }
-            val sortedByAvg = filterByGames.sortedByDescending { it.point }
-            Log.d(TAG, "putMyData: $sortedByAvg")
+            batterDetailDataList = gameViewModel.getTotalDetailData(userInfo.username!!)!!
+            userVisitResultList = gameViewModel.getUserGameResult(userInfo.username!!)!!
+
+            if(batterDetailDataList.size > 3) {
+                val sortedByPoint = batterDetailDataList.sortedByDescending { it.point }.subList(0, 3)
+                binding.mainRecordList.adapter =
+                    BatterMainListAdapter(this@MainFragment, sortedByPoint)
+            }
+            putGameResult()
         }
+    }
+
+    private fun putGameResult(){
+        val resultList = mutableListOf<Int>(0,0,0)
+        userVisitResultList.forEach {
+            when(it){
+                "승" -> resultList[0] += 1
+                "패" -> resultList[1] += 1
+                "무" -> resultList[2] += 1
+            }
+        }
+        var resultText = "${resultList[0]}승 ${resultList[1]}패 "
+        if(resultList[2] > 0) resultText += "${resultList[2]}무 "
+        resultText += "${"%.2f".format((resultList[0].toDouble()/userVisitResultList.size.toDouble()* 100))}%"
+
+        binding.mainWinRateResult.text = resultText
     }
 }

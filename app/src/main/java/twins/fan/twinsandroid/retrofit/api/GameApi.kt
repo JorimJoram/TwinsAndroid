@@ -21,4 +21,6 @@ interface GameApi {
     fun createUserVisit(@Body userVisit: UserVisit): Call<UserVisit>
     @DELETE("/game/api/visit/delete")
     fun deleteUserVisit(@Query("username") username:String, @Query("gameDate")gameDate:String):Call<Void>
+    @GET("/game/api/score-list")
+    fun getUserGameResult(@Query("username")username: String): Call<List<String>>
 }
