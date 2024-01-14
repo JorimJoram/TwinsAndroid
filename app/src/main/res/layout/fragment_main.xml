@@ -54,6 +54,16 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <TextView
+                android:id="@+id/main_record_head"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="주요 타자 기록"
+                android:textColor="@color/black"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="13dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/main_winRate_container" />
             <ListView
                 android:id="@+id/main_record_list"
                 android:layout_width="match_parent"
@@ -62,7 +72,27 @@
                 android:layout_marginEnd="13dp"
                 android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/main_winRate_container" />
+                app:layout_constraintTop_toBottomOf="@id/main_record_head" />
+
+            <TextView
+                android:id="@+id/main_recent_head"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="최근 관람 경기"
+                android:textColor="@color/black"
+                android:layout_marginStart="13dp"
+                android:layout_marginTop="40dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/main_record_list" />
+
+            <include
+                android:id="@+id/main_recent_gameRecord"
+                layout="@layout/game_list_item"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_margin="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/main_recent_head" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

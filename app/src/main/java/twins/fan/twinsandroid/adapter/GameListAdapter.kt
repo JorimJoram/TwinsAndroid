@@ -149,7 +149,7 @@ class GameListAdapter(
     }
 
     private fun putLogo(view: View, versusTeam:String, isLGHome:Boolean) {
-        var imgPath:Int = 0
+        var imgPath = 0
         val visitLogo:Int
         val homeLogo:Int
         when(versusTeam){
