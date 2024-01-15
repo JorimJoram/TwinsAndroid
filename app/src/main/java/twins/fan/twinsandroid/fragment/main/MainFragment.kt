@@ -29,6 +29,10 @@ import twins.fan.twinsandroid.data.game.TotalDetailRecord
 import twins.fan.twinsandroid.data.game.UserVisit
 import twins.fan.twinsandroid.databinding.FragmentMainBinding
 import twins.fan.twinsandroid.fragment.main.game.GameSearchFragment
+import twins.fan.twinsandroid.util.checkLogo
+import twins.fan.twinsandroid.util.pitchResult
+import twins.fan.twinsandroid.util.scoreLocate
+import twins.fan.twinsandroid.util.toFormattedDate
 import twins.fan.twinsandroid.viewmodel.GameViewModel
 import twins.fan.twinsandroid.viewmodel.LoginViewModel
 import java.lang.StringBuilder
@@ -117,131 +121,36 @@ class MainFragment : Fragment() {
     }
 
     private fun putRecentVisit(recentUserVisit: GameRecord) {
-        binding.mainRecentGameRecord.gameListItemDate.text = "${dateFormat(recentUserVisit.gameDate.substring(0,recentUserVisit.gameDate.length-1)) } ${recentUserVisit.startTime}~${recentUserVisit.endTime}"
+        val lgScoreSplit = recentUserVisit.lgScore.split(",")
+        val versusScoreSplit = recentUserVisit.versusScore.split(",")
+        val score = scoreLocate(recentUserVisit.stadium == "잠실종합운동장", lgScoreSplit, versusScoreSplit).split("_")
+        val logo = checkLogo(recentUserVisit.versusTeam, recentUserVisit.stadium == "잠실종합운동장")
+        val pitchGameResult = pitchResult(recentUserVisit.winner, recentUserVisit.loser, score[0].toInt(), score[1].toInt())
+
+        binding.mainRecentGameRecord.gameListItemDate.text = "${recentUserVisit.gameDate.substring(0,recentUserVisit.gameDate.length-1).toFormattedDate() } ${recentUserVisit.startTime}~${recentUserVisit.endTime}"
         binding.mainRecentGameRecord.gameListItemFinal.text = recentUserVisit.final.split("_").let {parts -> if (parts.size >= 2) "${parts[0]}\n${parts[1]}" else parts[0] }
+
         binding.mainRecentGameRecord.gameListItemSwitch.isChecked=true
         binding.mainRecentGameRecord.gameListItemSwitch.isEnabled=false
 
-        val lgScoreSplit = recentUserVisit.lgScore.split(",")
-        val versusScoreSplit = recentUserVisit.versusScore.split(",")
+        binding.mainRecentGameRecord.gameListItemHomeScore.text = score[0]
+        binding.mainRecentGameRecord.gameListItemHomeScore.typeface = if (score[0] > score[1]) android.graphics.Typeface.DEFAULT_BOLD else android.graphics.Typeface.DEFAULT
+        binding.mainRecentGameRecord.gameListItemVisitScore.text = score[1]
+        binding.mainRecentGameRecord.gameListItemVisitScore.typeface = if (score[0] < score[1]) android.graphics.Typeface.DEFAULT_BOLD else android.graphics.Typeface.DEFAULT
 
-        putScore(recentUserVisit.stadium == "잠실종합운동장", lgScoreSplit, versusScoreSplit)
-        putLogo(recentUserVisit.versusTeam, recentUserVisit.stadium == "잠실종합운동장")
-        putPitchResult(recentUserVisit.winner, recentUserVisit.loser)
-    }
-
-    private fun putScore(isLGHome: Boolean, lgScore: List<String>, versusScore: List<String>) {
-        val visitScore:String
-        val homeScore:String
-        when(isLGHome){
-            true -> {
-                visitScore = versusScore[versusScore.size-4]
-                homeScore = lgScore[lgScore.size-4]
-            }
-            else ->{
-                visitScore = lgScore[lgScore.size-4]
-                homeScore = versusScore[versusScore.size-4]
-            }
-        }
-        binding.mainRecentGameRecord.gameListItemHomeScore.text = homeScore
-        binding.mainRecentGameRecord.gameListItemVisitScore.text = visitScore
-    }
-
-    private fun putLogo(versusTeam:String, isLGHome:Boolean) {
-        var imgPath = 0
-        val visitLogo:Int
-        val homeLogo:Int
-        when(versusTeam){
-            "삼성" -> imgPath = R.raw.lions
-            "키움" -> imgPath = R.raw.heroes
-            "롯데" -> imgPath = R.raw.giants
-            "두산" -> imgPath = R.raw.bears
-            "KT"   -> imgPath = R.raw.wiz
-            "SSG"  -> imgPath = R.raw.landers
-            "한화" -> imgPath = R.raw.eagles
-            "기아" -> imgPath = R.raw.tigers
-            "NC"   -> imgPath = R.raw.dinos
-        }
-        when(isLGHome){
-            true -> {
-                visitLogo = imgPath
-                homeLogo = R.raw.twins
-            }
-            else -> {
-                visitLogo = R.raw.twins
-                homeLogo = imgPath
-            }
-        }
-
-        Glide.with(requireContext()).load(visitLogo)
-            .centerCrop()
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(binding.mainRecentGameRecord.gameListItemVisitLogo)
-        Glide.with(requireContext()).load(homeLogo)
-            .centerCrop()
+        Glide.with(requireContext()).load(logo[0])
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(binding.mainRecentGameRecord.gameListItemHomeLogo)
-    }
+        Glide.with(requireContext()).load(logo[1])
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(binding.mainRecentGameRecord.gameListItemVisitLogo)
 
-    private fun dateFormat(date:String): StringBuilder {
-        val result = StringBuilder()
-        for(i in date.indices step 2){
-            result.append(date.substring(i, minOf(i+2, date.length)))
-            if(i + 2 < date.length){
-                result.append(".")
-            }
-        }
+        binding.mainRecentGameRecord.gameListItemHomePitchResult.text = pitchGameResult[0][0].toString()
+        binding.mainRecentGameRecord.gameListItemHomePitchResult.setTextColor(pitchGameResult[0][1] as Int)
+        binding.mainRecentGameRecord.gameListItemVisitPitchResult.text = pitchGameResult[1][0].toString()
+        binding.mainRecentGameRecord.gameListItemVisitPitchResult.setTextColor(pitchGameResult[1][1] as Int)
 
-        val localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyMMdd"))
-        val dayOfWeekKorean = localDate.dayOfWeek.getDisplayName(TextStyle.FULL, Locale("ko-KR"))
-
-        result.append("(${dayOfWeekKorean.substring(0,1)})")
-
-        return result
-    }
-
-    private fun putPitchResult(winner: String, loser: String) {
-        val homeScoreView = binding.mainRecentGameRecord.gameListItemHomeScore
-        val visitScoreView = binding.mainRecentGameRecord.gameListItemVisitScore
-
-        val homeScore = homeScoreView.text.toString().toInt()
-        val visitScore = visitScoreView.text.toString().toInt()
-
-        setPitchResult(
-            binding.mainRecentGameRecord.gameListItemHomePitchResult,
-            getPitchText(homeScore, visitScore, winner, loser),
-            getPitchColor(homeScore, visitScore, "#204B9B", "#B32653")
-        )
-
-        setPitchResult(
-            binding.mainRecentGameRecord.gameListItemVisitPitchResult,
-            getPitchText(visitScore, homeScore, winner, loser),
-            getPitchColor(visitScore, homeScore, "#204B9B", "#B32653")
-        )
-
-        homeScoreView.typeface = if (homeScore > visitScore) android.graphics.Typeface.DEFAULT_BOLD else android.graphics.Typeface.DEFAULT
-        visitScoreView.typeface = if (homeScore > visitScore) android.graphics.Typeface.DEFAULT else android.graphics.Typeface.DEFAULT_BOLD
-    }
-
-    private fun getPitchText(score1: Int, score2: Int, winner: String, loser: String): String {
-        return when {
-            score1 > score2 -> "승: $winner"
-            score1 < score2 -> "패: $loser"
-            else -> "무"
-        }
-    }
-
-    private fun getPitchColor(score1: Int, score2: Int, winColor: String, loseColor: String): Int {
-        return when {
-            score1 > score2 -> Color.parseColor(winColor)
-            score1 < score2 -> Color.parseColor(loseColor)
-            else -> Color.BLACK
-        }
-    }
-
-    private fun setPitchResult(textView: TextView, resultText: String, color: Int) {
-        textView.text = resultText
-        textView.setTextColor(color)
+        //putPitchResult(recentUserVisit.winner, recentUserVisit.loser)
     }
 
     private fun putGameResult(){
