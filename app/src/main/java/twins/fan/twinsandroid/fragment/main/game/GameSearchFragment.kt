@@ -7,8 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.adapter.GameListAdapter
@@ -71,7 +74,7 @@ class GameSearchFragment : Fragment() {
     private val showDatePicker = OnClickListener{
         val datePickerDialog = DatePickerDialog(
             requireContext(),
-            { _,selectedYear,selectedMonth,selectedDay ->
+            { _, selectedYear, selectedMonth, _ ->
                 val selectedDate = Calendar.getInstance()
                 selectedDate.set(selectedYear, selectedMonth, 1)
                 val dateFormat = SimpleDateFormat("yyyy.MM", Locale.getDefault())
@@ -102,15 +105,15 @@ class GameSearchFragment : Fragment() {
         loadingAnimation.playAnimation()
 
         lifecycleScope.launch {
-            val gameList = gameViewModel.getGameListByMonth("${year.substring(2,4)}$month")
-            //val gameList = gameViewModel.getGameListByMonth("2308")
-            val userVisitList = gameViewModel.getUserVisit(AuthenticationInfo.getInstance().username!!)!!
+            val gameList = gameViewModel.getGameListByMonth("${year.substring(2,4)}$month")!!
+            val userVisitList = gameViewModel.getUserVisit(AuthenticationInfo.getInstance().username!!, "${year.substring(2,4)}$month")!!
             val visitDateList = mutableListOf<String>()
 
             userVisitList.forEach { visitDateList.add(it.visitDate) }
 
             val myAdapter = GameListAdapter(GameSearchFragment(),requireContext(), gameList, visitDateList)
             listView.adapter = myAdapter
+            myAdapter.setOnItemClickListener(listView)
 
             loadingAnimation.cancelAnimation()
             loadingAnimation.visibility = View.GONE

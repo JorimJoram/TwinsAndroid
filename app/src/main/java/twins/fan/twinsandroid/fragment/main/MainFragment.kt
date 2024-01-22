@@ -108,7 +108,7 @@ class MainFragment : Fragment() {
         lifecycleScope.launch{
             batterDetailDataList = gameViewModel.getTotalDetailData(userInfo.username!!)!!
             userVisitResultList = gameViewModel.getUserGameResult(userInfo.username!!)!!
-            val recentUserVisit = gameViewModel.getRecentUserVisit(userInfo.username!!)!!
+            val recentGameRecord = gameViewModel.getRecentUserVisit(userInfo.username!!)!!
 
             if(batterDetailDataList.size > 3) {
                 val sortedByPoint = batterDetailDataList.sortedByDescending { it.point }.subList(0, 3)
@@ -116,19 +116,24 @@ class MainFragment : Fragment() {
                     BatterMainListAdapter(this@MainFragment, sortedByPoint)
             }
             putGameResult()
-            putRecentVisit(recentUserVisit)
+            if(recentGameRecord.id != -1L) {
+                putRecentGameRecord(recentGameRecord)
+                binding.mainRecentGameRecord.gameListItemSwitch.visibility = View.VISIBLE
+            }else
+                binding.mainRecentGameRecord.gameListItemSwitch.visibility = View.GONE
         }
     }
 
-    private fun putRecentVisit(recentUserVisit: GameRecord) {
-        val lgScoreSplit = recentUserVisit.lgScore.split(",")
-        val versusScoreSplit = recentUserVisit.versusScore.split(",")
-        val score = scoreLocate(recentUserVisit.stadium == "잠실종합운동장", lgScoreSplit, versusScoreSplit).split("_")
-        val logo = checkLogo(recentUserVisit.versusTeam, recentUserVisit.stadium == "잠실종합운동장")
-        val pitchGameResult = pitchResult(recentUserVisit.winner, recentUserVisit.loser, score[0].toInt(), score[1].toInt())
+    private fun putRecentGameRecord(recentGameRecord: GameRecord) {
+        val lgScoreSplit = recentGameRecord.lgScore.split(",")
+        val versusScoreSplit = recentGameRecord.versusScore.split(",")
+        val score = scoreLocate(recentGameRecord.stadium == "잠실종합운동장", lgScoreSplit, versusScoreSplit).split("_")
+        val logo = checkLogo(recentGameRecord.versusTeam, recentGameRecord.stadium == "잠실종합운동장")
+        val pitchGameResult = pitchResult(recentGameRecord.winner, recentGameRecord.loser, score[0].toInt(), score[1].toInt())
+        val dateString = "${recentGameRecord.gameDate.substring(0,recentGameRecord.gameDate.length-1).toFormattedDate() } ${recentGameRecord.startTime}~${recentGameRecord.endTime}"
 
-        binding.mainRecentGameRecord.gameListItemDate.text = "${recentUserVisit.gameDate.substring(0,recentUserVisit.gameDate.length-1).toFormattedDate() } ${recentUserVisit.startTime}~${recentUserVisit.endTime}"
-        binding.mainRecentGameRecord.gameListItemFinal.text = recentUserVisit.final.split("_").let {parts -> if (parts.size >= 2) "${parts[0]}\n${parts[1]}" else parts[0] }
+        binding.mainRecentGameRecord.gameListItemDate.text = dateString
+        binding.mainRecentGameRecord.gameListItemFinal.text = recentGameRecord.final.split("_").let {parts -> if (parts.size >= 2) "${parts[0]}\n${parts[1]}" else parts[0] }
 
         binding.mainRecentGameRecord.gameListItemSwitch.isChecked=true
         binding.mainRecentGameRecord.gameListItemSwitch.isEnabled=false
@@ -149,11 +154,13 @@ class MainFragment : Fragment() {
         binding.mainRecentGameRecord.gameListItemHomePitchResult.setTextColor(pitchGameResult[0][1] as Int)
         binding.mainRecentGameRecord.gameListItemVisitPitchResult.text = pitchGameResult[1][0].toString()
         binding.mainRecentGameRecord.gameListItemVisitPitchResult.setTextColor(pitchGameResult[1][1] as Int)
-
-        //putPitchResult(recentUserVisit.winner, recentUserVisit.loser)
     }
 
     private fun putGameResult(){
+        if(userVisitResultList.isEmpty()){
+            binding.mainWinRateResult.text = "경기를 기록해보세요!"
+            return ;
+        }
         val resultList = mutableListOf<Int>(0,0,0)
         userVisitResultList.forEach {
             when(it){

@@ -1,18 +1,16 @@
 package twins.fan.twinsandroid.adapter
 
-import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.content.Context
-import android.graphics.Color
-import android.util.Log
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
-import androidx.compose.ui.text.font.Typeface
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -22,43 +20,52 @@ import twins.fan.twinsandroid.data.account.Account
 import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.data.game.GameRecord
 import twins.fan.twinsandroid.data.game.UserVisit
+import twins.fan.twinsandroid.fragment.main.game.GameDetailFragment
 import twins.fan.twinsandroid.fragment.main.game.GameSearchFragment
 import twins.fan.twinsandroid.util.checkLogo
 import twins.fan.twinsandroid.util.pitchResult
 import twins.fan.twinsandroid.util.scoreLocate
 import twins.fan.twinsandroid.util.toFormattedDate
 import twins.fan.twinsandroid.viewmodel.GameViewModel
-import java.lang.StringBuilder
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.format.TextStyle
-import java.util.Locale
-
 class GameListAdapter(
     private val fragment:GameSearchFragment,
     private val context: Context,
-    private val gameList: List<GameRecord>?,
+    private val gameList: List<GameRecord>,
     private val userVisitList: List<String>
 ):BaseAdapter() {
-
     private val gameViewModel = GameViewModel()
     private val userInfo = AuthenticationInfo.getInstance()
-    override fun getCount(): Int {
-        return gameList!!.size
+
+    private fun checkSwitch(view:View, game:GameRecord, ){
+        val switch = view.findViewById<SwitchCompat>(R.id.game_list_item_switch)
+        val visitSet = HashSet(userVisitList)
+
+        //switch.isChecked = visitSet.contains(game.gameDate)
+        if(visitSet.contains(game.gameDate)){ switch.isChecked = true }
+        switch.setOnCheckedChangeListener { _, isChecked ->
+            fragment.lifecycleScope.launch {
+                if(isChecked){
+                    if(gameViewModel.createUserVisit(UserVisit(account=Account(username=userInfo.username!!, password="", tel=""), visitDate = game.gameDate))!!.id!!.toInt() != -1){
+                        Toast.makeText(context, "등록되었습니다.", Toast.LENGTH_LONG).show()
+
+                    }
+                }else{
+                    gameViewModel.deleteUserVisit(userInfo.username!!, game.gameDate)
+                    Toast.makeText(context, "등록이 취소되었습니다.", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
 
-    override fun getItem(p0: Int): Any {
-        return gameList!![p0]
-    }
+    override fun getCount(): Int = gameList.size
 
-    override fun getItemId(p0: Int): Long {
-        return p0.toLong()
-    }
+    override fun getItem(position: Int): Any = gameList[position]
 
-    @SuppressLint("ViewHolder")
-    override fun getView(position: Int, converView: View?, parent: ViewGroup?): View {
+    override fun getItemId(position: Int): Long = position.toLong()
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = LayoutInflater.from(context).inflate(R.layout.game_list_item, null)
-        val game = gameList!![position]
+        val game = gameList[position]
 
         val logo = checkLogo(game.versusTeam, game.stadium == "잠실종합운동장")
         val lgScoreSplit = game.lgScore.split(",")
@@ -95,21 +102,18 @@ class GameListAdapter(
         return view
     }
 
-    private fun checkSwitch(view:View, game:GameRecord, ){
-        val switch = view.findViewById<SwitchCompat>(R.id.game_list_item_switch)
-        val visitSet = HashSet(userVisitList)
-        if(visitSet.contains(game.gameDate)){ switch.isChecked = true }
-        switch.setOnCheckedChangeListener { buttonView, isChecked ->
-            fragment.lifecycleScope.launch {
-                if(isChecked){
-                    if(gameViewModel.createUserVisit(UserVisit(account=Account(username=userInfo.username!!, password="", tel=""), visitDate = game.gameDate))!!.id!!.toInt() != -1){
-                        Toast.makeText(context, "등록되었습니다.", Toast.LENGTH_LONG).show()
-                    }
-                }else{
-                    gameViewModel.deleteUserVisit(userInfo.username!!, game.gameDate)
-                    Toast.makeText(context, "등록이 취소되었습니다.", Toast.LENGTH_LONG).show()
-                }
-            }
+    fun setOnItemClickListener(listView: ListView){
+        listView.setOnItemClickListener { parent, view, position, id ->
+            val clickItem = getItem(position) as GameRecord
+
+            val bundle = Bundle()
+            bundle.putString("gameDate", clickItem.gameDate)
+
+            val transaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.main_frameLayout, GameDetailFragment().apply { arguments = bundle })
+            transaction.addToBackStack("GAME_DETAIL")
+            transaction.commitAllowingStateLoss()
+
         }
     }
 }

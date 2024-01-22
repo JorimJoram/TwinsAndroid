@@ -11,9 +11,11 @@ import android.view.View.OnClickListener
 import android.view.animation.Animation.AnimationListener
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 import okhttp3.Headers
 import okhttp3.ResponseBody
+import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.databinding.ActivityLoginBinding
 import twins.fan.twinsandroid.viewmodel.LoginViewModel
@@ -39,6 +41,8 @@ class LoginActivity : AppCompatActivity() {
             val its = Intent(this.applicationContext, AccountActivity::class.java)
             startActivity(its)
         })
+
+        Glide.with(this).load(R.raw.lg_twins).into(loginBinding.loginMainLogo)
     }
 
     private val loginListener = OnClickListener{

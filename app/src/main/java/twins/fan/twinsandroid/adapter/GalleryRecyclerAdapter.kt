@@ -32,7 +32,6 @@ class GalleryRecyclerAdapter: PagingDataAdapter<Gallery, GalleryRecyclerAdapter.
                 Log.i(TAG, "bind: $data")
                 val context = itemView.context
 
-                //TODO("어디로 이동할지는 여기서 결정된다! Detail로 이동")
                 val bundle = Bundle()
                 bundle.putLong("id", data.id)
 

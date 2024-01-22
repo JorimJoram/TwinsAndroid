@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants">
 
     <TextView
         android:id="@+id/game_list_item_date"
@@ -16,7 +17,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/game_list_item_matchContainer"
         android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.85"
+        app:layout_constraintWidth_percent="0.88"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/game_list_item_date">
@@ -43,7 +44,6 @@
             android:id="@+id/game_list_item_homePitchResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="test"
             android:textSize="10sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/game_list_item_homeLogo"
@@ -54,7 +54,6 @@
             android:id="@+id/game_list_item_visitPitchResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="loser"
             android:textSize="10sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/game_list_item_visitLogo"
