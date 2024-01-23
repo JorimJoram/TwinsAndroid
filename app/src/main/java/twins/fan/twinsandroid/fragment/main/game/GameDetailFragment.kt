@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import twins.fan.twinsandroid.R
+import twins.fan.twinsandroid.adapter.BatterDetailAdapter
 import twins.fan.twinsandroid.adapter.ScoreAdapter
+import twins.fan.twinsandroid.data.game.BatterDetailRecord
 import twins.fan.twinsandroid.data.game.GameRecord
 import twins.fan.twinsandroid.databinding.FragmentGameDetailBinding
 import twins.fan.twinsandroid.viewmodel.GameViewModel
@@ -43,8 +45,24 @@ class GameDetailFragment : Fragment() {
             val isHome = gameRecord.stadium == "잠실종합운동장"
 
             setScoreBoard(isHome, gameRecord.versusTeam,gameRecord.lgScore, gameRecord.versusScore)
+            setBatterDetail(batterList)
         }
     }
+
+    private fun setBatterDetail(batterList: List<BatterDetailRecord>) {
+        val batterIndex = listOf("타순", "이름", "타수", "안타", "홈런", "타점", "사사구", "삼진", "타율")
+
+        val layoutManager = GridLayoutManager(requireContext(), 22)
+        layoutManager.spanSizeLookup = object :GridLayoutManager.SpanSizeLookup(){
+            override fun getSpanSize(position: Int): Int {
+                return if(position%9 == 1) 4 else if(position%9 == 6) 3 else 2
+            }
+        }
+        binding.gameDetailBatterDetail.layoutManager = layoutManager
+        binding.gameDetailBatterDetail.adapter = BatterDetailAdapter(batterList, batterIndex)
+    }
+
+
 
     private fun setScoreBoard(isHome:Boolean, versusTeam:String, lgScore:String, versusScore:String){
         val lgScoreList = processingScoreList(lgScore.split(",").toMutableList())
@@ -71,7 +89,6 @@ class GameDetailFragment : Fragment() {
         scoreList.forEachIndexed {index, score ->
             if(score.contains("(")){
                 extraScore += score.split("(")[0].toIntOrNull() ?: 0
-                //if(score.split("(")[0] != "-")
                 extraCnt += 1
                 resultScoreList[9] = extraScore.toString()
             }else{

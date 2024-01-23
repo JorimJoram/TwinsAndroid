@@ -16,5 +16,5 @@ class GameViewModel {
     suspend fun deleteUserVisit(username:String, gameDate:String) = gameApi.deleteUserVisit(username, gameDate).awaitResponse().body()
     suspend fun getRecentUserVisit(username: String) = gameApi.getRecentUserVisit(username).awaitResponse().body()
     suspend fun getGameRecordByDate(date:String) = gameApi.getGameRecordByDate(date).awaitResponse().body()!!
-    suspend fun getBatterDetailByGameRecordId(date: String)= gameApi.getBatterDetailByGameRecordId(date).awaitResponse().body()
+    suspend fun getBatterDetailByGameRecordId(date: String)= gameApi.getBatterDetailByGameRecordId(date).awaitResponse().body()!!
 }
