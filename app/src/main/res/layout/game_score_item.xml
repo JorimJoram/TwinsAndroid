@@ -5,6 +5,22 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/game_score_itemIningInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/game_score_item_awayScore" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/game_score_item_awayScore"/>
+
+    <TextView
         android:id="@+id/game_score_item_awayScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
