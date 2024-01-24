@@ -8,10 +8,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlinx.coroutines.launch
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.adapter.BatterDetailAdapter
@@ -19,6 +22,9 @@ import twins.fan.twinsandroid.adapter.ScoreAdapter
 import twins.fan.twinsandroid.data.game.BatterDetailRecord
 import twins.fan.twinsandroid.data.game.GameRecord
 import twins.fan.twinsandroid.databinding.FragmentGameDetailBinding
+import twins.fan.twinsandroid.util.checkLogo
+import twins.fan.twinsandroid.util.scoreLocate
+import twins.fan.twinsandroid.util.toFormattedDate
 import twins.fan.twinsandroid.viewmodel.GameViewModel
 import kotlin.math.log
 
@@ -46,7 +52,34 @@ class GameDetailFragment : Fragment() {
 
             setScoreBoard(isHome, gameRecord.versusTeam,gameRecord.lgScore, gameRecord.versusScore)
             setBatterDetail(batterList)
+            binding.gameDetailBatterComments.text = "* PH: 지명타자, Pinch Hitter\n** DS: 대수비, Defensive Substitution"
+            setScoreContainer(gameRecord)
         }
+    }
+
+    private fun setScoreContainer(game:GameRecord){
+        binding.gameDetailDate.text = game.gameDate.substring(0, game.gameDate.length - 1).toFormattedDate()
+        binding.gameDetailTime.text = "${game.stadium} ${game.startTime}~${game.endTime}"
+
+        val logo = checkLogo(game.versusTeam, game.stadium=="잠실종합운동장")
+        Glide.with(requireContext()).load(logo[0])
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(binding.gameDetailHomeLogo)
+        Glide.with(requireContext()).load(logo[1])
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(binding.gameDetailVisitLogo)
+
+        val lgScoreSplit = game.lgScore.split(",")
+        val versusScoreSplit = game.versusScore.split(",")
+        val score = scoreLocate(game.stadium == "잠실종합운동장", lgScoreSplit, versusScoreSplit).split("_")
+        val homeScoreView = binding.gameDetailHomeScore
+        val visitScoreView = binding.gameDetailVisitScore
+        homeScoreView.text = score[0]
+        homeScoreView.typeface = if (score[0].toInt() > score[1].toInt()) android.graphics.Typeface.DEFAULT_BOLD else android.graphics.Typeface.DEFAULT
+        visitScoreView.text = score[1]
+        visitScoreView.typeface = if (score[0].toInt() < score[1].toInt()) android.graphics.Typeface.DEFAULT_BOLD else android.graphics.Typeface.DEFAULT
+
+        binding.gameDetailDetailFinal.text = game.final.split("_").let {parts -> if (parts.size >= 2) "${parts[0]}\n${parts[1]}" else parts[0] }
     }
 
     private fun setBatterDetail(batterList: List<BatterDetailRecord>) {
@@ -61,8 +94,6 @@ class GameDetailFragment : Fragment() {
         binding.gameDetailBatterDetail.layoutManager = layoutManager
         binding.gameDetailBatterDetail.adapter = BatterDetailAdapter(batterList, batterIndex)
     }
-
-
 
     private fun setScoreBoard(isHome:Boolean, versusTeam:String, lgScore:String, versusScore:String){
         val lgScoreList = processingScoreList(lgScore.split(",").toMutableList())

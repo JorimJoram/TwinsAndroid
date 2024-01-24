@@ -11,21 +11,28 @@ class BatterDetailAdapter(private val batterList:List<BatterDetailRecord>, priva
         private val binding: GameBatterDetailItemBinding
     ):RecyclerView.ViewHolder(binding.root){
         fun bind(position:Int){
-            val batterInfo = batterList[position/batterIndex.size]
-            val index = position % batterIndex.size
+            if(position / batterIndex.size == 0)
+                setIndex(position, binding)
+            else{
+                val index = (position) % batterIndex.size
+                val batterInfo = batterList[(position/batterIndex.size) - 1]
+                binding.gameDetailBatterDetailItem.text = processingBatterDetail(batterInfo)[index]
+            }
+        }
 
-            binding.gameDetailBatterDetailItem.text = processingBatterDetail(batterInfo)[index]
+        private fun setIndex(position: Int,binding: GameBatterDetailItemBinding) {
+            binding.gameDetailBatterDetailItem.text = batterIndex[position%9]
         }
     }
 
-    private fun processingBatterDetail(batterDetail:BatterDetailRecord): List<String> =listOf(batterDetail.entry, batterDetail.name, batterDetail.ab.toString(), batterDetail.hit.toString(), batterDetail.hr.toString(), batterDetail.rbi.toString(), batterDetail.bb.toString(), "0", batterDetail.avg.substring(1,5))
+    private fun processingBatterDetail(batterDetail:BatterDetailRecord): List<String> =listOf(if(batterDetail.entry.contains("-") && batterDetail.record != "") "PH" else if(batterDetail.entry.contains("-") && batterDetail.record == "") "DS" else batterDetail.entry, batterDetail.name, batterDetail.ab.toString(), batterDetail.hit.toString(), batterDetail.hr.toString(), batterDetail.rbi.toString(), batterDetail.bb.toString(), "0", if(batterDetail.avg == "NaN") ".000" else batterDetail.avg.substring(1,5))
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BatterDetailViewHolder {
         val binding = GameBatterDetailItemBinding.inflate(LayoutInflater.from(parent.context))
         return BatterDetailViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = batterList.size * batterIndex.size//BatterDetailRecord::class.java.declaredFields.size-3
+    override fun getItemCount(): Int = (batterList.size+1) * batterIndex.size
 
     override fun onBindViewHolder(holder: BatterDetailViewHolder, position: Int) {
         holder.bind(position)
