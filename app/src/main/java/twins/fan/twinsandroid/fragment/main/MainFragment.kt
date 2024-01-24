@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
@@ -28,6 +29,7 @@ import twins.fan.twinsandroid.data.game.GameRecord
 import twins.fan.twinsandroid.data.game.TotalDetailRecord
 import twins.fan.twinsandroid.data.game.UserVisit
 import twins.fan.twinsandroid.databinding.FragmentMainBinding
+import twins.fan.twinsandroid.fragment.main.game.GameDetailFragment
 import twins.fan.twinsandroid.fragment.main.game.GameSearchFragment
 import twins.fan.twinsandroid.util.checkLogo
 import twins.fan.twinsandroid.util.pitchResult
@@ -50,6 +52,7 @@ class MainFragment : Fragment() {
 
     private lateinit var batterDetailDataList:List<TotalDetailRecord>
     private lateinit var userVisitResultList:List<String>
+    private lateinit var recentGameRecord:GameRecord
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -108,7 +111,7 @@ class MainFragment : Fragment() {
         lifecycleScope.launch{
             batterDetailDataList = gameViewModel.getTotalDetailData(userInfo.username!!)!!
             userVisitResultList = gameViewModel.getUserGameResult(userInfo.username!!)!!
-            val recentGameRecord = gameViewModel.getRecentUserVisit(userInfo.username!!)!!
+            recentGameRecord = gameViewModel.getRecentUserVisit(userInfo.username!!)!!
 
             if(batterDetailDataList.size > 3) {
                 val sortedByPoint = batterDetailDataList.sortedByDescending { it.point }.subList(0, 3)
@@ -122,6 +125,18 @@ class MainFragment : Fragment() {
             }else
                 binding.mainRecentGameRecord.gameListItemSwitch.visibility = View.GONE
         }
+
+        binding.mainRecentGameRecord.gameListItemMatchContainer.setOnClickListener(goDetail)
+    }
+
+    private val goDetail = OnClickListener {
+        val bundle = Bundle()
+        bundle.putString("gameDate", recentGameRecord.gameDate)
+
+        val transaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.main_frameLayout, GameDetailFragment().apply { arguments = bundle })
+        transaction.addToBackStack("GAME_DETAIL")
+        transaction.commitAllowingStateLoss()
     }
 
     private fun putRecentGameRecord(recentGameRecord: GameRecord) {
@@ -155,7 +170,6 @@ class MainFragment : Fragment() {
         binding.mainRecentGameRecord.gameListItemVisitPitchResult.text = pitchGameResult[1][0].toString()
         binding.mainRecentGameRecord.gameListItemVisitPitchResult.setTextColor(pitchGameResult[1][1] as Int)
     }
-
     private fun putGameResult(){
         if(userVisitResultList.isEmpty()){
             binding.mainWinRateResult.text = "경기를 기록해보세요!"

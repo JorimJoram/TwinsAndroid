@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
@@ -53,13 +54,16 @@ class GameDetailFragment : Fragment() {
             val gameRecord = gameViewModel.getGameRecordByDate(gameDate)
             val batterList = gameViewModel.getBatterDetailByGameRecordId(gameDate)
             val isVisit = gameViewModel.getUserVisitDate(userInfo.username!!, gameRecord.gameDate)?:false
+            val visitCnt = gameViewModel.getUserVisitCntByDate(gameDate)!!
 
             val isHome = gameRecord.stadium == "잠실종합운동장"
 
             setScoreBoard(isHome, gameRecord.versusTeam,gameRecord.lgScore, gameRecord.versusScore)
             setBatterDetail(batterList)
-            binding.gameDetailBatterComments.text = "* PH: 지명타자, Pinch Hitter\n** DS: 대수비, Defensive Substitution"
+            binding.gameDetailBatterComments.text = "* PH: 지명타자, Pinch Hitter\n* DS: 대수비, Defensive Substitution"
             setScoreContainer(gameRecord)
+            binding.gameDetailSwitchCnt.text = visitCnt.toString()
+
             val visitSwitch = binding.gameDetailSwitch
             visitSwitch.isChecked =  isVisit
             visitSwitch.setOnCheckedChangeListener { _, isChecked ->
@@ -67,12 +71,12 @@ class GameDetailFragment : Fragment() {
                     if(isChecked){
                         if(gameViewModel.createUserVisit(UserVisit(account= Account(username=userInfo.username!!, password="", tel=""), visitDate = gameRecord.gameDate))!!.id!!.toInt() != -1){
                             Toast.makeText(context, "등록되었습니다.", Toast.LENGTH_LONG).show()
-
                         }
                     }else{
                         gameViewModel.deleteUserVisit(userInfo.username!!, gameRecord.gameDate)
                         Toast.makeText(context, "등록이 취소되었습니다.", Toast.LENGTH_LONG).show()
                     }
+                    binding.gameDetailSwitchCnt.text = gameViewModel.getUserVisitCntByDate(gameDate).toString()
                 }
             }
         }

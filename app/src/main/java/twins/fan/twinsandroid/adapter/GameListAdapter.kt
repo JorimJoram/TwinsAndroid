@@ -40,14 +40,12 @@ class GameListAdapter(
         val switch = view.findViewById<SwitchCompat>(R.id.game_list_item_switch)
         val visitSet = HashSet(userVisitList)
 
-        //switch.isChecked = visitSet.contains(game.gameDate)
         if(visitSet.contains(game.gameDate)){ switch.isChecked = true }
         switch.setOnCheckedChangeListener { _, isChecked ->
             fragment.lifecycleScope.launch {
                 if(isChecked){
                     if(gameViewModel.createUserVisit(UserVisit(account=Account(username=userInfo.username!!, password="", tel=""), visitDate = game.gameDate))!!.id!!.toInt() != -1){
                         Toast.makeText(context, "등록되었습니다.", Toast.LENGTH_LONG).show()
-
                     }
                 }else{
                     gameViewModel.deleteUserVisit(userInfo.username!!, game.gameDate)

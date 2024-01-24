@@ -32,4 +32,6 @@ interface GameApi {
     fun getBatterDetailByGameRecordId(@Query("date")date: String): Call<List<BatterDetailRecord>>
     @GET("/game/api/visit/single")
     fun getUserVisitByDate(@Query("username") username: String, @Query("date")date: String): Call<Boolean>
+    @GET("/game/api/visit/cnt")
+    fun getUserVisitCntByDate(@Query("date")date: String): Call<Int>
 }
