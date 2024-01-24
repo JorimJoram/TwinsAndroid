@@ -24,7 +24,7 @@ class BatterMainListAdapter(
         val record = batterDetailList[position]
 
         view.findViewById<TextView>(R.id.main_batter_item_name).text = record.name
-        view.findViewById<TextView>(R.id.main_batter_item_record).text = "${record.game}경기 ${record.ab}타수 ${record.hit}안타 ${record.hr}홈런 ${record.rbi}타점\n타율: ${record.avg}, 출루율: ${record.obp}"
+        view.findViewById<TextView>(R.id.main_batter_item_record).text = "${record.game}경기 ${record.ab}타수 ${record.hit}안타 ${record.hr}홈런 ${record.rbi}타점\n타율: ${record.avg}, 출루율: ${record.obp} 장타율: ${record.slg} OPS: ${"%.${3}f".format(record.obp.toDouble() + record.slg.toDouble())}"
 
         return view
     }

@@ -25,7 +25,7 @@ class BatterDetailAdapter(private val batterList:List<BatterDetailRecord>, priva
         }
     }
 
-    private fun processingBatterDetail(batterDetail:BatterDetailRecord): List<String> =listOf(if(batterDetail.entry.contains("-") && batterDetail.record != "") "PH" else if(batterDetail.entry.contains("-") && batterDetail.record == "") "DS" else batterDetail.entry, batterDetail.name, batterDetail.ab.toString(), batterDetail.hit.toString(), batterDetail.hr.toString(), batterDetail.rbi.toString(), batterDetail.bb.toString(), "0", if(batterDetail.avg == "NaN") ".000" else batterDetail.avg.substring(1,5))
+    private fun processingBatterDetail(batterDetail:BatterDetailRecord): List<String> =listOf(if(batterDetail.entry.contains("-") && batterDetail.record != "") "PH" else if(batterDetail.entry.contains("-") && batterDetail.record == "") "DS" else batterDetail.entry, batterDetail.name, batterDetail.ab.toString(), batterDetail.hit.toString(), batterDetail.hr.toString(), batterDetail.rbi.toString(), batterDetail.bb.toString(), batterDetail.k.toString(), if(batterDetail.avg == "NaN") ".000" else batterDetail.avg.substring(1,5))
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BatterDetailViewHolder {
         val binding = GameBatterDetailItemBinding.inflate(LayoutInflater.from(parent.context))

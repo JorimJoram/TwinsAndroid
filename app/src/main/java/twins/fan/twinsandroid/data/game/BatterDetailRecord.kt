@@ -9,6 +9,7 @@ data class BatterDetailRecord(
 
     val ab:Int,
     val bb:Int,
+    val k:Int,
     val hit:Int,
     val hr:Int,
     val rbi: Int,

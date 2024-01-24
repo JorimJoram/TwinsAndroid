@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,8 +20,11 @@ import kotlinx.coroutines.launch
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.adapter.BatterDetailAdapter
 import twins.fan.twinsandroid.adapter.ScoreAdapter
+import twins.fan.twinsandroid.data.account.Account
+import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.data.game.BatterDetailRecord
 import twins.fan.twinsandroid.data.game.GameRecord
+import twins.fan.twinsandroid.data.game.UserVisit
 import twins.fan.twinsandroid.databinding.FragmentGameDetailBinding
 import twins.fan.twinsandroid.util.checkLogo
 import twins.fan.twinsandroid.util.scoreLocate
@@ -32,6 +36,7 @@ class GameDetailFragment : Fragment() {
     private lateinit var binding:FragmentGameDetailBinding
     private var gameDate = ""
     private val gameViewModel = GameViewModel()
+    private val userInfo = AuthenticationInfo.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +52,7 @@ class GameDetailFragment : Fragment() {
         lifecycleScope.launch {
             val gameRecord = gameViewModel.getGameRecordByDate(gameDate)
             val batterList = gameViewModel.getBatterDetailByGameRecordId(gameDate)
+            val isVisit = gameViewModel.getUserVisitDate(userInfo.username!!, gameRecord.gameDate)?:false
 
             val isHome = gameRecord.stadium == "잠실종합운동장"
 
@@ -54,6 +60,21 @@ class GameDetailFragment : Fragment() {
             setBatterDetail(batterList)
             binding.gameDetailBatterComments.text = "* PH: 지명타자, Pinch Hitter\n** DS: 대수비, Defensive Substitution"
             setScoreContainer(gameRecord)
+            val visitSwitch = binding.gameDetailSwitch
+            visitSwitch.isChecked =  isVisit
+            visitSwitch.setOnCheckedChangeListener { _, isChecked ->
+                lifecycleScope.launch {
+                    if(isChecked){
+                        if(gameViewModel.createUserVisit(UserVisit(account= Account(username=userInfo.username!!, password="", tel=""), visitDate = gameRecord.gameDate))!!.id!!.toInt() != -1){
+                            Toast.makeText(context, "등록되었습니다.", Toast.LENGTH_LONG).show()
+
+                        }
+                    }else{
+                        gameViewModel.deleteUserVisit(userInfo.username!!, gameRecord.gameDate)
+                        Toast.makeText(context, "등록이 취소되었습니다.", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
         }
     }
 
