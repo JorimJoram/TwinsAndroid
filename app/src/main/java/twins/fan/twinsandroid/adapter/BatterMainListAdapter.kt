@@ -5,12 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.data.game.TotalDetailRecord
 import twins.fan.twinsandroid.fragment.main.MainFragment
 
 class BatterMainListAdapter(
-    private val fragment:MainFragment,
+    private val fragment:Fragment,
     private val batterDetailList:List<TotalDetailRecord>
 ):BaseAdapter() {
     override fun getCount(): Int = batterDetailList.size

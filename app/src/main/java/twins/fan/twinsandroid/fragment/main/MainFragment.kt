@@ -88,6 +88,11 @@ class MainFragment : Fragment() {
     }
     private fun getMyData(){
         val userInfo = AuthenticationInfo.getInstance()
+
+        val loadingAnimation = binding.mainLottieView
+        loadingAnimation.visibility = View.VISIBLE
+        loadingAnimation.playAnimation()
+
         lifecycleScope.launch{
             batterDetailDataList = gameViewModel.getTotalDetailData(userInfo.username!!)!!
             userVisitResultList = gameViewModel.getUserGameResult(userInfo.username!!)!!
@@ -107,6 +112,9 @@ class MainFragment : Fragment() {
         }
 
         binding.mainRecentGameRecord.gameListItemMatchContainer.setOnClickListener(goDetail)
+
+        loadingAnimation.cancelAnimation()
+        loadingAnimation.visibility = View.GONE
     }
     private fun putRecentGameRecord(recentGameRecord: GameRecord) {
         val lgScoreSplit = recentGameRecord.lgScore.split(",")

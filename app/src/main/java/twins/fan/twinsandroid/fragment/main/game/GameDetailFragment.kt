@@ -50,6 +50,11 @@ class GameDetailFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
+        val loadingAnimation = binding.gameDetailLottieView
+        loadingAnimation.visibility = View.VISIBLE
+        loadingAnimation.playAnimation()
+
         lifecycleScope.launch {
             val gameRecord = gameViewModel.getGameRecordByDate(gameDate)
             val batterList = gameViewModel.getBatterDetailByGameRecordId(gameDate)
@@ -79,6 +84,9 @@ class GameDetailFragment : Fragment() {
                     binding.gameDetailSwitchCnt.text = gameViewModel.getUserVisitCntByDate(gameDate).toString()
                 }
             }
+
+            loadingAnimation.cancelAnimation()
+            loadingAnimation.visibility = View.GONE
         }
     }
 

@@ -179,6 +179,20 @@
                     app:layout_constraintStart_toEndOf="@id/game_detail_switchHead"
                     app:layout_constraintTop_toTopOf="@+id/game_detail_switchHead"
                     app:layout_constraintBottom_toBottomOf="@id/game_detail_switchHead"/>
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/game_detail_lottieView"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lottie_autoPlay="false"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/loading_lottie" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
     </FrameLayout>

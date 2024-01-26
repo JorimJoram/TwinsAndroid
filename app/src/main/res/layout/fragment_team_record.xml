@@ -20,53 +20,129 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/team_record_winRateChart"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
                 <TextView
-                    android:id="@+id/team_record_winRate"
+                    android:id="@+id/team_record_head"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
-                    android:textColor="@color/twins_red"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/team_record_winRateChart"
-                    app:layout_constraintEnd_toEndOf="@+id/team_record_winRateChart"
-                    app:layout_constraintStart_toStartOf="@+id/team_record_winRateChart"
-                    app:layout_constraintTop_toTopOf="@+id/team_record_winRateChart" />
+                    android:text="test"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/team_record_chartContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/team_record_head"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/res_main_constraint_background">
+
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/team_record_winRateChart"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="10dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/team_record_winRate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textColor="@color/twins_red"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/team_record_winRateChart"
+                        app:layout_constraintEnd_toEndOf="@+id/team_record_winRateChart"
+                        app:layout_constraintStart_toStartOf="@+id/team_record_winRateChart"
+                        app:layout_constraintTop_toTopOf="@+id/team_record_winRateChart" />
+
+                    <TextView
+                        android:id="@+id/team_record_winRecord"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:textSize="25sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/team_record_winRateChart"
+                        app:layout_constraintStart_toEndOf="@+id/team_record_winRateChart"
+                        app:layout_constraintTop_toTopOf="@+id/team_record_winRateChart" />
+
+                    <TextView
+                        android:id="@+id/team_record_winRecordRecommend"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="@+id/team_record_winRecord"
+                        app:layout_constraintStart_toStartOf="@+id/team_record_winRecord"
+                        app:layout_constraintTop_toBottomOf="@+id/team_record_winRecord" />
+
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/team_record_teamDetailChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="30dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/team_record_winRateChart" />
+
+                    <TextView
+                        android:id="@+id/team_record_teamDetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="80dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:textSize="17sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/team_record_teamDetailChart"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
-                    android:id="@+id/team_record_winRecord"
+                    android:id="@+id/team_record_batterDetailHead"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="타자기록"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/team_record_chartContainer" />
+
+                <ListView
+                    android:id="@+id/team_record_batterDetail"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:textSize="25sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/team_record_winRateChart"
-                    app:layout_constraintStart_toEndOf="@+id/team_record_winRateChart"
-                    app:layout_constraintTop_toTopOf="@+id/team_record_winRateChart" />
-
-                <TextView
-                    android:id="@+id/team_record_winRecordRecommend"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="@+id/team_record_winRecord"
-                    app:layout_constraintStart_toStartOf="@+id/team_record_winRecord"
-                    app:layout_constraintTop_toBottomOf="@+id/team_record_winRecord" />
-
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/team_record_teamDetailChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="10dp"
+                    android:scrollbars="none"
+                    android:nestedScrollingEnabled="false"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/team_record_winRateChart" />
+                    app:layout_constraintTop_toBottomOf="@id/team_record_batterDetailHead" />
 
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/team_record_lottieView"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lottie_autoPlay="false"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/loading_lottie" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
