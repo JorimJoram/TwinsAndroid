@@ -16,7 +16,7 @@ interface GameApi {
     fun getGameListByMonth(@Query("date")date: String): Call<List<GameRecord>>
     @GET("/game/api/visit/list")
     fun getUserVisitList(@Query("username")username: String, @Query("date")yearMonth:String): Call<List<UserVisit>>
-    @GET("/game/api/total")
+    @GET("/game/api/batter/total")
     fun getUserTotalData(@Query("username")username:String): Call<List<TotalDetailRecord>>
     @POST("/game/api/visit/create")
     fun createUserVisit(@Body userVisit: UserVisit): Call<UserVisit>
@@ -34,4 +34,6 @@ interface GameApi {
     fun getUserVisitByDate(@Query("username") username: String, @Query("date")date: String): Call<Boolean>
     @GET("/game/api/visit/cnt")
     fun getUserVisitCntByDate(@Query("date")date: String): Call<Int>
+    @GET("/game/api/team/total")
+    fun getTeamTotalData(@Query("username")username: String): Call<TotalDetailRecord>
 }

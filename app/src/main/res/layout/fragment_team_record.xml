@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragment.main.game.TeamRecordFragment">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/team_record_winRateChart"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/team_record_winRate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textColor="@color/twins_red"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/team_record_winRateChart"
+                    app:layout_constraintEnd_toEndOf="@+id/team_record_winRateChart"
+                    app:layout_constraintStart_toStartOf="@+id/team_record_winRateChart"
+                    app:layout_constraintTop_toTopOf="@+id/team_record_winRateChart" />
+
+                <TextView
+                    android:id="@+id/team_record_winRecord"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:textSize="25sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/team_record_winRateChart"
+                    app:layout_constraintStart_toEndOf="@+id/team_record_winRateChart"
+                    app:layout_constraintTop_toTopOf="@+id/team_record_winRateChart" />
+
+                <TextView
+                    android:id="@+id/team_record_winRecordRecommend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="@+id/team_record_winRecord"
+                    app:layout_constraintStart_toStartOf="@+id/team_record_winRecord"
+                    app:layout_constraintTop_toBottomOf="@+id/team_record_winRecord" />
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/team_record_teamDetailChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/team_record_winRateChart" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+    </FrameLayout>
+</layout>

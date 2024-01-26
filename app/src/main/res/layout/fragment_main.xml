@@ -75,15 +75,27 @@
                 app:layout_constraintTop_toBottomOf="@id/main_record_head" />
 
             <TextView
+                android:id="@+id/main_game_toRecord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="더 보기"
+                android:textSize="15sp"
+                android:textColor="@color/twins_red"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="@+id/main_record_list"
+                app:layout_constraintStart_toStartOf="@+id/main_record_list"
+                app:layout_constraintTop_toBottomOf="@+id/main_record_list" />
+
+            <TextView
                 android:id="@+id/main_recent_head"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="최근 관람 경기"
                 android:textColor="@color/black"
                 android:layout_marginStart="13dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/main_record_list" />
+                app:layout_constraintTop_toBottomOf="@id/main_game_toRecord" />
 
             <include
                 android:id="@+id/main_recent_gameRecord"

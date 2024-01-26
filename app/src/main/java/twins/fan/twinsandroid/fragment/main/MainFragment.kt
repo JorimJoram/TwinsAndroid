@@ -31,6 +31,7 @@ import twins.fan.twinsandroid.data.game.UserVisit
 import twins.fan.twinsandroid.databinding.FragmentMainBinding
 import twins.fan.twinsandroid.fragment.main.game.GameDetailFragment
 import twins.fan.twinsandroid.fragment.main.game.GameSearchFragment
+import twins.fan.twinsandroid.fragment.main.game.TeamRecordFragment
 import twins.fan.twinsandroid.util.checkLogo
 import twins.fan.twinsandroid.util.pitchResult
 import twins.fan.twinsandroid.util.scoreLocate
@@ -62,35 +63,15 @@ class MainFragment : Fragment() {
 
         Glide.with(requireContext())
             .load(R.raw.twins)
-            .into(binding.mainWinRateTeamImage)
+            .into(binding.mainWinRateTeamImage) //TODO("라이프사이클 확인하고 충분한 근거를 가지고 배치해주시기 바랍니다.")
 
         return binding.root
     }
-
-    private val testListener = OnClickListener{
-        val transaction = activity?.supportFragmentManager?.beginTransaction()
-        val gameSearchFragment = GameSearchFragment()
-        transaction!!.replace(R.id.main_frameLayout, gameSearchFragment)
-        transaction.addToBackStack("GAME_SEARCH")
-        transaction.commitAllowingStateLoss()
-    }
-
-    private val backButtonEvent = object: OnBackPressedCallback(true){
-        override fun handleOnBackPressed() {
-            if(isClicked){
-                requireActivity().finishAffinity()
-                lifecycleScope.launch { loginViewModel.logoutProcess() }
-            }
-            isClicked = true
-            Toast.makeText(requireContext(), "종료하시려면 한 번 더 눌러주세요", Toast.LENGTH_LONG).show()
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.mainWinRateContainer.setOnClickListener(testListener)
+        binding.mainWinRateContainer.setOnClickListener(goSearch)
+        binding.mainGameToRecord.setOnClickListener(toGameDetail)
     }
-
     override fun onResume() {
         super.onResume()
 
@@ -105,7 +86,6 @@ class MainFragment : Fragment() {
         //binding.mainViewPager.adapter = MainViewPagerAdapter(getViewPagerItem())
         //binding.mainViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
     }
-
     private fun getMyData(){
         val userInfo = AuthenticationInfo.getInstance()
         lifecycleScope.launch{
@@ -128,17 +108,6 @@ class MainFragment : Fragment() {
 
         binding.mainRecentGameRecord.gameListItemMatchContainer.setOnClickListener(goDetail)
     }
-
-    private val goDetail = OnClickListener {
-        val bundle = Bundle()
-        bundle.putString("gameDate", recentGameRecord.gameDate)
-
-        val transaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.main_frameLayout, GameDetailFragment().apply { arguments = bundle })
-        transaction.addToBackStack("GAME_DETAIL")
-        transaction.commitAllowingStateLoss()
-    }
-
     private fun putRecentGameRecord(recentGameRecord: GameRecord) {
         val lgScoreSplit = recentGameRecord.lgScore.split(",")
         val versusScoreSplit = recentGameRecord.versusScore.split(",")
@@ -175,7 +144,7 @@ class MainFragment : Fragment() {
             binding.mainWinRateResult.text = "경기를 기록해보세요!"
             return ;
         }
-        val resultList = mutableListOf<Int>(0,0,0)
+        val resultList = mutableListOf(0,0,0)
         userVisitResultList.forEach {
             when(it){
                 "승" -> resultList[0] += 1
@@ -188,5 +157,39 @@ class MainFragment : Fragment() {
         resultText += "${"%.2f".format((resultList[0].toDouble()/userVisitResultList.size.toDouble()* 100))}%"
 
         binding.mainWinRateResult.text = resultText
+    }
+
+    private val toGameDetail = OnClickListener {
+        val transaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.main_frameLayout, TeamRecordFragment())
+        transaction.addToBackStack("GAME_RECORD")
+        transaction.commitAllowingStateLoss()
+    }
+    private val goDetail = OnClickListener {
+        val bundle = Bundle()
+        bundle.putString("gameDate", recentGameRecord.gameDate)
+
+        val transaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.main_frameLayout, GameDetailFragment().apply { arguments = bundle })
+        transaction.addToBackStack("GAME_DETAIL")
+        transaction.commitAllowingStateLoss()
+    }
+    private val goSearch = OnClickListener{
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        val gameSearchFragment = GameSearchFragment()
+        transaction!!.replace(R.id.main_frameLayout, gameSearchFragment)
+        transaction.addToBackStack("GAME_SEARCH")
+        transaction.commitAllowingStateLoss()
+    }
+
+    private val backButtonEvent = object: OnBackPressedCallback(true){
+        override fun handleOnBackPressed() {
+            if(isClicked){
+                requireActivity().finishAffinity()
+                lifecycleScope.launch { loginViewModel.logoutProcess() }
+            }
+            isClicked = true
+            Toast.makeText(requireContext(), "종료하시려면 한 번 더 눌러주세요", Toast.LENGTH_LONG).show()
+        }
     }
 }

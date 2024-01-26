@@ -19,4 +19,5 @@ class GameViewModel {
     suspend fun getBatterDetailByGameRecordId(date: String)= gameApi.getBatterDetailByGameRecordId(date).awaitResponse().body()!!
     suspend fun getUserVisitDate(username: String, date: String) = gameApi.getUserVisitByDate(username, date).awaitResponse().body()
     suspend fun getUserVisitCntByDate(date:String) = gameApi.getUserVisitCntByDate(date).awaitResponse().body()
+    suspend fun getTeamTotalData(username: String) = gameApi.getTeamTotalData(username).awaitResponse().body()
 }
