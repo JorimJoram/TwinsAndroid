@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 import okhttp3.Headers
 import okhttp3.ResponseBody
+import twins.fan.twinsandroid.BuildConfig
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.databinding.ActivityLoginBinding
@@ -41,7 +42,6 @@ class LoginActivity : AppCompatActivity() {
             val its = Intent(this.applicationContext, AccountActivity::class.java)
             startActivity(its)
         })
-
         Glide.with(this).load(R.raw.lg_twins).into(loginBinding.loginMainLogo)
     }
 
@@ -72,7 +72,6 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
-
     private fun showFailCode(e:Exception) {
         when(e){
             is SocketTimeoutException -> loginBinding.usernameMsg.text = "서버가 아직 열리지 않았습니다.\n잠시후에 다시 이용해주세요."
@@ -81,7 +80,6 @@ class LoginActivity : AppCompatActivity() {
         }
         //Toast.makeText(this.applicationContext, "Server connection failed", Toast.LENGTH_LONG).show()
     }
-
     private fun checkResult(headers: Headers, body: HashMap<String, Any>) {
         if(body.containsKey("exception")){
             val exceptionCode:String = when(body["exception"]){

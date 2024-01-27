@@ -83,8 +83,8 @@ class MainFragment : Fragment() {
 
         getMyData()
 
-        //binding.mainViewPager.adapter = MainViewPagerAdapter(getViewPagerItem())
-        //binding.mainViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        binding.mainViewPager.adapter = MainViewPagerAdapter(listOf("test1", "test2"))
+        binding.mainViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
     }
     private fun getMyData(){
         val userInfo = AuthenticationInfo.getInstance()

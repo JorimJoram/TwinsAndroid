@@ -78,7 +78,7 @@
                 android:id="@+id/main_game_toRecord"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="더 보기"
+                android:text="기록 더 보기"
                 android:textSize="15sp"
                 android:textColor="@color/twins_red"
                 android:layout_marginTop="10dp"

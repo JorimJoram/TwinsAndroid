@@ -1,7 +1,6 @@
 package twins.fan.twinsandroid.fragment.main.game
 
 import android.content.ContentValues.TAG
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -24,7 +23,6 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import kotlinx.coroutines.launch
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.adapter.BatterMainListAdapter
@@ -52,7 +50,6 @@ class TeamRecordFragment : Fragment() {
         setTitle()
         getMyAllData()
     }
-
     private fun setTitle(){
         val head = "${userInfo.username}님 \n 직관정보를 확인해보세요!"
         val title = SpannableString(head)
@@ -62,7 +59,6 @@ class TeamRecordFragment : Fragment() {
         title.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.twins_red)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         binding.teamRecordHead.text = title
     }
-
     private fun getMyAllData(){
         val loadingAnimation = binding.teamRecordLottieView
         loadingAnimation.visibility = View.VISIBLE
@@ -81,7 +77,6 @@ class TeamRecordFragment : Fragment() {
             loadingAnimation.visibility = View.GONE
         }
     }
-
     private fun setBatterDetailData(batterList: List<TotalDetailRecord>) {
         var sortedByGamesAndOPS = batterList.sortedWith(
             compareByDescending<TotalDetailRecord> { it.game }
@@ -90,18 +85,14 @@ class TeamRecordFragment : Fragment() {
         Log.d(TAG, "setBatterDetailData: $sortedByGamesAndOPS")
         binding.teamRecordBatterDetail.adapter = BatterMainListAdapter(this@TeamRecordFragment, sortedByGamesAndOPS)
         val params = binding.teamRecordBatterDetail.layoutParams
-        params.height = sortedByGamesAndOPS.size * 75
+        params.height = sortedByGamesAndOPS.size * 150
         binding.teamRecordBatterDetail.layoutParams = params
     }
-
     private fun setTeamTotalData(teamData: TotalDetailRecord) {
-        val teamChartDetailList = listOf(
-            BarEntry(1f, teamData.avg.toFloat()),
-            BarEntry(2f, teamData.obp.toFloat()),
-            BarEntry(3f, teamData.slg.toFloat()),
-            BarEntry(4f, teamData.slg.toFloat()+teamData.obp.toFloat()))
+        val teamChartDetailList = listOf(BarEntry(1f, teamData.avg.toFloat()), BarEntry(2f, teamData.obp.toFloat()), BarEntry(3f, teamData.slg.toFloat()), BarEntry(4f, teamData.slg.toFloat()+teamData.obp.toFloat()))
         val teamChartLabel = listOf("","타율","출루율","장타율","OPS")
         val barDataSet = BarDataSet(teamChartDetailList, "DataSet")
+        barDataSet.color = resources.getColor(R.color.twins_red, null)
         val dataSet = BarData(barDataSet)
         dataSet.barWidth = 0.2f
         dataSet.setValueTextSize(15f)

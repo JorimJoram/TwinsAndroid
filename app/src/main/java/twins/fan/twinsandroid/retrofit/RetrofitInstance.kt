@@ -5,6 +5,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+import twins.fan.twinsandroid.BuildConfig
 import twins.fan.twinsandroid.retrofit.api.AccountApi
 import twins.fan.twinsandroid.retrofit.api.GalleryApi
 import twins.fan.twinsandroid.retrofit.api.GameApi
@@ -21,7 +22,7 @@ object RetrofitInstance {
         clientBuilder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
 
         Retrofit.Builder()
-            .baseUrl("http://49.173.81.98:8080/")
+            .baseUrl(BuildConfig.myUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .client(clientBuilder.build())
             .build()
