@@ -1,6 +1,7 @@
 package twins.fan.twinsandroid.fragment.main.game
 
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -10,6 +11,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
@@ -50,6 +54,29 @@ class TeamRecordFragment : Fragment() {
         setTitle()
         getMyAllData()
     }
+    private fun  setSpinner(batterList: List<TotalDetailRecord>){
+        val spinnerArray = arrayOf("OPS", "출루율","장타율", "타율", "안타수", "홈런수")
+        val adapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, spinnerArray)
+        adapter.setDropDownViewResource(com.airbnb.lottie.R.layout.support_simple_spinner_dropdown_item)
+        binding.teamRecordBatterDetailSpinner.adapter = adapter
+        binding.teamRecordBatterDetailSpinner.onItemSelectedListener = object: OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val sortedByGamesAndOPS = when(position){
+                    0 -> batterList.sortedWith(compareByDescending<TotalDetailRecord> { it.ab }.thenByDescending{ it.slg.toDouble() + it.obp.toDouble() })
+                    1 -> batterList.sortedWith(compareByDescending<TotalDetailRecord> { it.ab }.thenByDescending{ it.obp })
+                    2 -> batterList.sortedWith(compareByDescending<TotalDetailRecord> { it.ab }.thenByDescending{ it.slg })
+                    4 -> batterList.sortedWith(compareByDescending<TotalDetailRecord> { it.ab }.thenByDescending{ it.avg })
+                    5 -> batterList.sortedWith(compareByDescending<TotalDetailRecord> { it.hit })
+                    else -> batterList.sortedByDescending { it.hr }
+                }
+                setBatterDetailData(sortedByGamesAndOPS)
+                Log.d(TAG, "onItemSelected: $sortedByGamesAndOPS")
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                setBatterDetailData(batterList)
+            }
+        }
+    }
     private fun setTitle(){
         val head = "${userInfo.username}님 \n 직관정보를 확인해보세요!"
         val title = SpannableString(head)
@@ -65,27 +92,22 @@ class TeamRecordFragment : Fragment() {
         loadingAnimation.playAnimation()
 
         lifecycleScope.launch {
-            val batterTotalDataList = gameViewModel.getTotalDetailData(userInfo.username!!)
+            val batterList = gameViewModel.getTotalDetailData(userInfo.username!!)
             val teamTotalData = gameViewModel.getTeamTotalData(userInfo.username!!)
             val teamRecord = gameViewModel.getUserGameResult(userInfo.username!!)
 
             setWinRateChart(teamRecord!!)
             setTeamTotalData(teamTotalData!!)
-            setBatterDetailData(batterTotalDataList!!)
+            setSpinner(batterList!!)
 
             loadingAnimation.cancelAnimation()
             loadingAnimation.visibility = View.GONE
         }
     }
     private fun setBatterDetailData(batterList: List<TotalDetailRecord>) {
-        var sortedByGamesAndOPS = batterList.sortedWith(
-            compareByDescending<TotalDetailRecord> { it.game }
-                .thenByDescending{it.slg.toDouble() + it.obp.toDouble()}
-        )
-        Log.d(TAG, "setBatterDetailData: $sortedByGamesAndOPS")
-        binding.teamRecordBatterDetail.adapter = BatterMainListAdapter(this@TeamRecordFragment, sortedByGamesAndOPS)
+        binding.teamRecordBatterDetail.adapter = BatterMainListAdapter(this@TeamRecordFragment, batterList)
         val params = binding.teamRecordBatterDetail.layoutParams
-        params.height = sortedByGamesAndOPS.size * 150
+        params.height = batterList.size * 150
         binding.teamRecordBatterDetail.layoutParams = params
     }
     private fun setTeamTotalData(teamData: TotalDetailRecord) {
