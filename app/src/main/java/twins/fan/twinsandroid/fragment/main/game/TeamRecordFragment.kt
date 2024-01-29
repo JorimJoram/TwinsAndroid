@@ -55,24 +55,24 @@ class TeamRecordFragment : Fragment() {
         getMyAllData()
     }
     private fun  setSpinner(batterList: List<TotalDetailRecord>){
-        val spinnerArray = arrayOf("OPS", "출루율","장타율", "타율", "안타수", "홈런수")
+        val spinnerArray = arrayOf("추천","타율", "OPS", "게임수","안타수", "홈런수")
         val adapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, spinnerArray)
         adapter.setDropDownViewResource(com.airbnb.lottie.R.layout.support_simple_spinner_dropdown_item)
         binding.teamRecordBatterDetailSpinner.adapter = adapter
         binding.teamRecordBatterDetailSpinner.onItemSelectedListener = object: OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val sortedByGamesAndOPS = when(position){
-                    0 -> batterList.sortedWith(compareByDescending<TotalDetailRecord> { it.ab }.thenByDescending{ it.slg.toDouble() + it.obp.toDouble() })
-                    1 -> batterList.sortedWith(compareByDescending<TotalDetailRecord> { it.ab }.thenByDescending{ it.obp })
-                    2 -> batterList.sortedWith(compareByDescending<TotalDetailRecord> { it.ab }.thenByDescending{ it.slg })
-                    4 -> batterList.sortedWith(compareByDescending<TotalDetailRecord> { it.ab }.thenByDescending{ it.avg })
-                    5 -> batterList.sortedWith(compareByDescending<TotalDetailRecord> { it.hit })
-                    else -> batterList.sortedByDescending { it.hr }
+                    0 -> batterList.sortedByDescending { it.point }
+                    1 -> batterList.sortedWith(compareByDescending<TotalDetailRecord> { it.avg }.thenByDescending{ it.ab })
+                    2 -> batterList.sortedWith(compareByDescending<TotalDetailRecord> { it.slg.toDouble() + it.obp.toDouble() }.thenBy{ it.ab })
+                    3 -> batterList.sortedWith(compareByDescending<TotalDetailRecord> { it.game }.thenByDescending{ it.slg.toDouble() + it.obp.toDouble() }.thenBy{ it.ab })
+                    4 -> batterList.sortedWith(compareByDescending<TotalDetailRecord> { it.hit }.thenByDescending { it.ab })
+                    else -> batterList.sortedWith(compareByDescending<TotalDetailRecord> { it.hr }.thenByDescending { it.ab })
                 }
                 setBatterDetailData(sortedByGamesAndOPS)
-                Log.d(TAG, "onItemSelected: $sortedByGamesAndOPS")
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
+                Log.d(TAG, "test-batterList: $batterList")
                 setBatterDetailData(batterList)
             }
         }
