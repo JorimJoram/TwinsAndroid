@@ -15,7 +15,7 @@
         android:id="@+id/main_batter_item_record"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30sp"
+        android:layout_marginStart="15sp"
         android:text="record"
         app:layout_constraintStart_toEndOf="@id/main_batter_item_name"
         app:layout_constraintTop_toTopOf="parent"/>

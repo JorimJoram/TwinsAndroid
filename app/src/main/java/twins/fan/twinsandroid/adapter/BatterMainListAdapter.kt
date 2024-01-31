@@ -1,5 +1,6 @@
 package twins.fan.twinsandroid.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ class BatterMainListAdapter(
 
     override fun getItemId(p0: Int): Long = p0.toLong()
 
+    @SuppressLint("ViewHolder", "SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = LayoutInflater.from(fragment.context).inflate(R.layout.main_batter_list_item, null)
         val record = batterDetailList[position]

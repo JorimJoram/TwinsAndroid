@@ -1,10 +1,8 @@
 package twins.fan.twinsandroid.retrofit
 
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import twins.fan.twinsandroid.BuildConfig
 import twins.fan.twinsandroid.retrofit.api.AccountApi
 import twins.fan.twinsandroid.retrofit.api.GalleryApi
@@ -18,8 +16,6 @@ object RetrofitInstance {
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(15, TimeUnit.SECONDS)
-
-        clientBuilder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
 
         Retrofit.Builder()
             .baseUrl(BuildConfig.myUrl)
