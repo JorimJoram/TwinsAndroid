@@ -1,21 +1,14 @@
 package twins.fan.twinsandroid.activity
 
-import android.animation.Animator
-import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
-import android.view.animation.Animation.AnimationListener
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 import okhttp3.Headers
-import okhttp3.ResponseBody
-import twins.fan.twinsandroid.BuildConfig
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.databinding.ActivityLoginBinding

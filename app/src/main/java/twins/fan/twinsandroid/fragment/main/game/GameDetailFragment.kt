@@ -11,6 +11,7 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -27,6 +28,7 @@ import twins.fan.twinsandroid.data.game.BatterDetailRecord
 import twins.fan.twinsandroid.data.game.GameRecord
 import twins.fan.twinsandroid.data.game.UserVisit
 import twins.fan.twinsandroid.databinding.FragmentGameDetailBinding
+import twins.fan.twinsandroid.fragment.main.answer.AnswerFragment
 import twins.fan.twinsandroid.util.checkLogo
 import twins.fan.twinsandroid.util.scoreLocate
 import twins.fan.twinsandroid.util.toFormattedDate
@@ -44,6 +46,7 @@ class GameDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         gameDate = arguments?.getString("gameDate")!!
+        Log.d(TAG, "login: $userInfo")
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_detail, container, false)
         return binding.root
     }
@@ -60,6 +63,7 @@ class GameDetailFragment : Fragment() {
             val batterList = gameViewModel.getBatterDetailByGameRecordId(gameDate)
             val isVisit = gameViewModel.getUserVisitDate(userInfo.username!!, gameRecord.gameDate)?:false
             val visitCnt = gameViewModel.getUserVisitCntByDate(gameDate)!!
+            val answerCnt = gameViewModel.getAnswerCntByDate(gameDate)
 
             val isHome = gameRecord.stadium == "잠실종합운동장"
 
@@ -68,6 +72,7 @@ class GameDetailFragment : Fragment() {
             binding.gameDetailBatterComments.text = "* PH: 지명타자, Pinch Hitter\n* DS: 대수비, Defensive Substitution"
             setScoreContainer(gameRecord)
             binding.gameDetailSwitchCnt.text = visitCnt.toString()
+            binding.gameDetailCommentCnt.text = answerCnt.toString()
 
             val visitSwitch = binding.gameDetailSwitch
             visitSwitch.isChecked =  isVisit
@@ -88,6 +93,18 @@ class GameDetailFragment : Fragment() {
             loadingAnimation.cancelAnimation()
             loadingAnimation.visibility = View.GONE
         }
+
+        binding.gameDetailCommentContainer.setOnClickListener(toComment)
+    }
+
+    private val toComment = OnClickListener {
+        val bundle = Bundle()
+        bundle.putString("gameDate", gameDate)
+
+        val transaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.main_frameLayout, AnswerFragment().apply { arguments = bundle })
+        transaction.addToBackStack("ANSWER")
+        transaction.commitAllowingStateLoss()
     }
 
     private fun setScoreContainer(game:GameRecord){

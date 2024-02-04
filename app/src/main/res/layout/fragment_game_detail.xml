@@ -152,6 +152,15 @@
                     app:layout_constraintStart_toStartOf="@id/game_detail_batterComments"
                     app:layout_constraintTop_toBottomOf="@id/game_detail_batterComments" />
 
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/game_detail_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    app:layout_constraintStart_toEndOf="@id/game_detail_switchHead"
+                    app:layout_constraintTop_toTopOf="@+id/game_detail_switchHead"
+                    app:layout_constraintBottom_toBottomOf="@id/game_detail_switchHead"/>
+
                 <ImageView
                     android:id="@+id/game_detail_checkImg"
                     android:layout_width="30dp"
@@ -171,14 +180,47 @@
                     app:layout_constraintStart_toEndOf="@id/game_detail_checkImg"
                     app:layout_constraintTop_toTopOf="@+id/game_detail_checkImg" />
 
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/game_detail_switch"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    app:layout_constraintStart_toEndOf="@id/game_detail_switchHead"
-                    app:layout_constraintTop_toTopOf="@+id/game_detail_switchHead"
-                    app:layout_constraintBottom_toBottomOf="@id/game_detail_switchHead"/>
+                    android:id="@+id/game_detail_commentContainer"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="30dp"
+                    app:layout_constraintStart_toEndOf="@id/game_detail_switchCnt"
+                    app:layout_constraintTop_toBottomOf="@+id/game_detail_switchHead">
+
+                    <ImageView
+                        android:id="@+id/game_detail_commentImg"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/baseline_add_comment_24"
+                        android:layout_marginStart="30dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/game_detail_commentHead"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="댓글"
+                        android:layout_marginStart="10dp"
+                        app:layout_constraintStart_toEndOf="@id/game_detail_commentImg"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
+
+                    <TextView
+                        android:id="@+id/game_detail_commentCnt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="0"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/game_detail_commentHead" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/game_detail_lottieView"
