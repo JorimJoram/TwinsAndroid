@@ -15,30 +15,28 @@ import twins.fan.twinsandroid.data.game.UserVisit
 interface GameApi {
     @GET("/game/api/list")
     fun getGameListByMonth(@Query("date")date: String): Call<List<GameRecord>>
-    @GET("/game/api/visit/list")
-    fun getUserVisitList(@Query("username")username: String, @Query("date")yearMonth:String): Call<List<UserVisit>>
-    @GET("/game/api/batter/total")
-    fun getUserTotalData(@Query("username")username:String): Call<List<TotalDetailRecord>>
-    @POST("/game/api/visit/create")
-    fun createUserVisit(@Body userVisit: UserVisit): Call<UserVisit>
-    @DELETE("/game/api/visit/delete")
-    fun deleteUserVisit(@Query("username") username:String, @Query("gameDate")gameDate:String):Call<Void>
-    @GET("/game/api/result-list")
-    fun getUserGameResult(@Query("username")username: String): Call<List<String>>
-    @GET("/game/api/visit/last")
-    fun getRecentUserVisit(@Query("username")username: String): Call<GameRecord> //TODO("밑에 일자별로 찾아내는 메서드 활용할 수 있어보임")
     @GET("/game/api/game")
     fun getGameRecordByDate(@Query("date")date: String): Call<GameRecord>
-    @GET("/game/api/batter/detail")
-    fun getBatterDetailByGameRecordId(@Query("date")date: String): Call<List<BatterDetailRecord>>
+    @GET("/game/api/visit/list")
+    fun getUserVisitList(@Query("username")username: String, @Query("date")yearMonth:String): Call<List<UserVisit>>
+    @POST("/game/api/visit/create")
+    fun createUserVisit(@Body userVisit: UserVisit): Call<UserVisit>
+    @GET("/game/api/visit/last")
+    fun getRecentUserVisit(@Query("username")username: String): Call<GameRecord>
     @GET("/game/api/visit/single")
     fun getUserVisitByDate(@Query("username") username: String, @Query("date")date: String): Call<Boolean>
     @GET("/game/api/visit/cnt")
     fun getUserVisitCntByDate(@Query("date")date: String): Call<Int>
+    @DELETE("/game/api/visit/delete")
+    fun deleteUserVisit(@Query("username") username:String, @Query("gameDate")gameDate:String):Call<Void>
+    @GET("/game/api/batter/total")
+    fun getUserTotalData(@Query("username")username:String): Call<List<TotalDetailRecord>>
+    @GET("/game/api/batter/detail")
+    fun getBatterDetailByGameRecordId(@Query("date")date: String): Call<List<BatterDetailRecord>>
     @GET("/game/api/team/total")
     fun getTeamTotalData(@Query("username")username: String): Call<TotalDetailRecord>
-    @GET("/game/api/answer/cnt")
-    fun getAnswerCntByDate(@Query("date")gameDate: String): Call<Int>
     @GET("/game/api/answer/list")
     fun getAnswerList(@Query("date") gameDate: String): Call<List<Answer>>
+    @GET("/game/api/result-list")
+    fun getUserGameResult(@Query("username")username: String): Call<List<String>>
 }

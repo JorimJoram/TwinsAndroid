@@ -6,6 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import twins.fan.twinsandroid.BuildConfig
 import twins.fan.twinsandroid.retrofit.api.AccountApi
+import twins.fan.twinsandroid.retrofit.api.AnswerApi
 import twins.fan.twinsandroid.retrofit.api.GalleryApi
 import twins.fan.twinsandroid.retrofit.api.GameApi
 import twins.fan.twinsandroid.retrofit.api.LoginApi
@@ -31,4 +32,5 @@ object RetrofitInstance {
     val accountApi: AccountApi by lazy { retrofitInit.create(AccountApi::class.java) }
     val gallApi:GalleryApi by lazy { retrofitInit.create(GalleryApi::class.java) }
     val gameApi:GameApi by lazy { retrofitInit.create(GameApi::class.java) }
+    val answerApi:AnswerApi by lazy { retrofitInit.create(AnswerApi::class.java) }
 }

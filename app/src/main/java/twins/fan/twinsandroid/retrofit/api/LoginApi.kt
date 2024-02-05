@@ -10,7 +10,6 @@ interface LoginApi {
     @FormUrlEncoded
     @POST("login/process")
     fun loginProcess(@Field("username") username:String, @Field("password")password:String): Call<HashMap<String, Any>>
-
     @GET("/logout")
     fun logoutProcess():Call<Void>
 }

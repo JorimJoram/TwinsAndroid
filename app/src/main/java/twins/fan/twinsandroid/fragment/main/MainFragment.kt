@@ -43,17 +43,20 @@ class MainFragment : Fragment() {
     private lateinit var userVisitResultList:List<String>
     private lateinit var recentGameRecord:GameRecord
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
+        return binding.root
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         Glide.with(requireContext())
             .load(R.raw.twins)
-            .into(binding.mainWinRateTeamImage) //TODO("라이프사이클 확인하고 충분한 근거를 가지고 배치해주시기 바랍니다.")
-
-        return binding.root
+            .into(binding.mainWinRateTeamImage) //TODO("라이프사이클 확인하고 충분한 근거를 가지고 배치해주시기 바랍니다.222222")
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -150,7 +153,7 @@ class MainFragment : Fragment() {
         }
         var resultText = "${resultList[0]}승 ${resultList[1]}패 "
         if(resultList[2] > 0) resultText += "${resultList[2]}무 "
-        resultText += "${"%.2f".format((resultList[0].toDouble()/userVisitResultList.size.toDouble()* 100))}%"
+        resultText += "${"%.2f".format((resultList[0].toDouble()/userVisitResultList.size.toDouble()*100))}%"
 
         binding.mainWinRateResult.text = resultText
     }

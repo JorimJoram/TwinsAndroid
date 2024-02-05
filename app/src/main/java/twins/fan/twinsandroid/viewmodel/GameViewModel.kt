@@ -7,6 +7,7 @@ import twins.fan.twinsandroid.retrofit.RetrofitInstance
 
 class GameViewModel {
     private val gameApi = RetrofitInstance.gameApi
+    private val answerApi = RetrofitInstance.answerApi
 
     suspend fun getGameListByMonth(date:String) = gameApi.getGameListByMonth(date).awaitResponse().body()
     suspend fun getTotalDetailData(username:String) = gameApi.getUserTotalData(username).awaitResponse().body()
@@ -20,6 +21,6 @@ class GameViewModel {
     suspend fun getUserVisitDate(username: String, date: String) = gameApi.getUserVisitByDate(username, date).awaitResponse().body()
     suspend fun getUserVisitCntByDate(date:String) = gameApi.getUserVisitCntByDate(date).awaitResponse().body()
     suspend fun getTeamTotalData(username: String) = gameApi.getTeamTotalData(username).awaitResponse().body()
-    suspend fun getAnswerCntByDate(gameDate: String) = gameApi.getAnswerCntByDate(gameDate).awaitResponse().body()
+    suspend fun getAnswerCntByDate(gameDate: String) = answerApi.getAnswerCntByDate(gameDate).awaitResponse().body()
     suspend fun getAnswerList(gameDate: String) = gameApi.getAnswerList(gameDate).awaitResponse().body()
 }

@@ -28,29 +28,15 @@ class GalleryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_gallery, container, false)
-
         return binding.root
     }
-
     override fun onResume() {
         super.onResume()
-
         getAndPutData()
-
         val bottomBar = activity?.findViewById<BottomNavigationView>(R.id.main_bottom_nav)
         bottomBar?.menu?.findItem(R.id.menu_gallery)?.isChecked = true
-
-        val floatingButton = binding.gallListFloatingButton.setOnClickListener(toCreate)
+        binding.gallListFloatingButton.setOnClickListener(toCreate)
     }
-
-    private val toCreate = OnClickListener{
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        val createFragment = GalleryCreateFragment()
-        transaction.replace(R.id.main_frameLayout, createFragment)
-        transaction.addToBackStack("GALLERY_CREATE")
-        transaction.commitAllowingStateLoss()
-    }
-
     private fun getAndPutData(){
         val adapter = GalleryRecyclerAdapter()
         binding.gallListRecyclerView.adapter = adapter
@@ -67,5 +53,13 @@ class GalleryFragment : Fragment() {
 
             }
         }
+    }
+
+    private val toCreate = OnClickListener{
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        val createFragment = GalleryCreateFragment()
+        transaction.replace(R.id.main_frameLayout, createFragment)
+        transaction.addToBackStack("GALLERY_CREATE")
+        transaction.commitAllowingStateLoss()
     }
 }

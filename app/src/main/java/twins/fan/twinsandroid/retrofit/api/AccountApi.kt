@@ -15,7 +15,6 @@ interface AccountApi {
     fun sendCode(@Query("tel")tel: String): Call<String>
     @POST("/account/api/create")
     fun createAccount(@Body account: Account): Call<Account>
-
     @GET("/account/api/image")
     fun getAccountImage(@Query("username") username:String): Call<AccountImage>
 }
