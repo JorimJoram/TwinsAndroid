@@ -1,16 +1,11 @@
 package twins.fan.twinsandroid.fragment.main
 
-import android.content.ContentValues.TAG
-import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -27,7 +22,6 @@ import twins.fan.twinsandroid.adapter.MainViewPagerAdapter
 import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.data.game.GameRecord
 import twins.fan.twinsandroid.data.game.TotalDetailRecord
-import twins.fan.twinsandroid.data.game.UserVisit
 import twins.fan.twinsandroid.databinding.FragmentMainBinding
 import twins.fan.twinsandroid.fragment.main.game.GameDetailFragment
 import twins.fan.twinsandroid.fragment.main.game.GameSearchFragment
@@ -38,12 +32,6 @@ import twins.fan.twinsandroid.util.scoreLocate
 import twins.fan.twinsandroid.util.toFormattedDate
 import twins.fan.twinsandroid.viewmodel.GameViewModel
 import twins.fan.twinsandroid.viewmodel.LoginViewModel
-import java.lang.StringBuilder
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.format.TextStyle
-import java.util.Locale
-
 
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
@@ -189,7 +177,6 @@ class MainFragment : Fragment() {
         transaction.addToBackStack("GAME_SEARCH")
         transaction.commitAllowingStateLoss()
     }
-
     private val backButtonEvent = object: OnBackPressedCallback(true){
         override fun handleOnBackPressed() {
             if(isClicked){

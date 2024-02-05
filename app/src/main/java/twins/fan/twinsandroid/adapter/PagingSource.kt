@@ -22,11 +22,7 @@ class PagingSource(
             val data: List<Gallery> = response?.content ?: listOf()
 
             val nextKey = if (data.isEmpty()) { null } else { pageIndex + 1 }
-            LoadResult.Page(
-                data = data,
-                prevKey = null,
-                nextKey = nextKey
-            )
+            LoadResult.Page(data = data, prevKey = null, nextKey = nextKey)
         }catch (e:Exception){
             LoadResult.Error(e)
         }

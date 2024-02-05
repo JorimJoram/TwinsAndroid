@@ -29,11 +29,9 @@ class GalleryRecyclerAdapter: PagingDataAdapter<Gallery, GalleryRecyclerAdapter.
 
 
             itemView.setOnClickListener{
-                Log.i(TAG, "bind: $data")
                 val context = itemView.context
 
                 val bundle = Bundle()
-                bundle.putLong("id", data.id)
 
                 val transaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.main_frameLayout, GalleryDetailFragment().apply { arguments = bundle })

@@ -16,9 +16,7 @@ import twins.fan.twinsandroid.fragment.account.AccountFragmentUsername
 class AccountActivity : AppCompatActivity() {
     private lateinit var accountBinding: ActivityAccountBinding
     private lateinit var fragmentManager:FragmentManager
-
     private lateinit var transaction:FragmentTransaction
-
     private val usernameFragment = AccountFragmentUsername()
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -13,13 +13,8 @@ import twins.fan.twinsandroid.retrofit.RetrofitInstance
 
 class GallViewModel: ViewModel() {
     private val gallApi = RetrofitInstance.gallApi
-
-    fun setPaging(): Flow<PagingData<Gallery>> {
-        return PagingRepositoryImpl(gallApi).getResultList().cachedIn(viewModelScope)
-    }
-
+    fun setPaging(): Flow<PagingData<Gallery>> = PagingRepositoryImpl(gallApi).getResultList().cachedIn(viewModelScope)
     suspend fun getById(id:Long) = gallApi.getById(id).awaitResponse().body()
-
     suspend fun deleteById(id:Long) = gallApi.deleteById(id).awaitResponse().body()
     suspend fun createGallery(requestGallery: RequestGallery) = gallApi.createGallery(requestGallery).awaitResponse().body()
 }

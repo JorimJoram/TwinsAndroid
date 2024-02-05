@@ -24,8 +24,8 @@ class ScoreAdapter(
             val iningList = listOf("","1","2","3","4","5","6","7","8","9","연장","R","H","E","B")
 
             val selectTeam = if(isHome) teamList else teamList.reversed()
-            val homeScoreList = if(isHome) lgScoreList else versusScoreList //GPT qudtlstoRl
-            val awayScoreList = if(!isHome) lgScoreList else versusScoreList //GPT qudtlstoRl
+            val homeScoreList = if(isHome) lgScoreList else versusScoreList
+            val awayScoreList = if(!isHome) lgScoreList else versusScoreList
 
             home = if (position == 0) selectTeam[0] else if (position in 1..9) decToHex(homeScoreList[position - 1]) else homeScoreList[position - 1]
             away = if (position == 0) selectTeam[1] else if (position in 1..9) decToHex(awayScoreList[position - 1]) else awayScoreList[position - 1]

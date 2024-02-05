@@ -46,20 +46,14 @@ class LoginActivity : AppCompatActivity() {
         lifecycleScope.launch{
             val username = loginBinding.loginUsername.text.toString()
             try {
-                val result = loginViewModel.loginProcess(
-                    username,
-                    loginBinding.loginPassword.text.toString()
-                )
-                if(result.isSuccessful) {
-                    checkResult(result.headers(), result.body()!!)
-                }else{
-                    showFailCode(java.lang.Exception("isNotSuccessful"))
-                }
-            }catch (e: SocketTimeoutException){
+                val result = loginViewModel.loginProcess(username, loginBinding.loginPassword.text.toString())
+                if(result.isSuccessful) { checkResult(result.headers(), result.body()!!) }
+                else{ showFailCode(java.lang.Exception("isNotSuccessful")) }
+            } catch (e: SocketTimeoutException){
                 showFailCode(e)
-            }catch (e: ProtocolException){
+            } catch (e: ProtocolException){
                 showFailCode(e)
-            }finally {
+            } finally {
                 loadingAnimation.cancelAnimation()
                 loadingAnimation.visibility = View.GONE
             }
@@ -71,7 +65,6 @@ class LoginActivity : AppCompatActivity() {
             is ProtocolException -> loginBinding.usernameMsg.text = "인터넷 연결을 다시 확인해주세요"
             else -> loginBinding.usernameMsg.text = "다시 시도해주세요"
         }
-        //Toast.makeText(this.applicationContext, "Server connection failed", Toast.LENGTH_LONG).show()
     }
     private fun checkResult(headers: Headers, body: HashMap<String, Any>) {
         if(body.containsKey("exception")){

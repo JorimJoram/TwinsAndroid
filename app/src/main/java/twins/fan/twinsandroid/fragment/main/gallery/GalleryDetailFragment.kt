@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
+import twins.fan.twinsandroid.BuildConfig
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.databinding.FragmentGalleryDetailBinding
@@ -58,8 +59,8 @@ class GalleryDetailFragment : Fragment() {
             binding.gallDetailContent.text = data.content
 
             Glide.with(requireContext())
-                .load("http://49.173.81.98:8080"+accountViewModel.getAccountImage(data.account.username)!!.path)
-                .into(binding.gallDetailAccountImage) //TODO("첫술에 배부를 리가...")
+                .load(BuildConfig.myUrl+accountViewModel.getAccountImage(data.account.username)!!.path)
+                .into(binding.gallDetailAccountImage)
 
             if(AuthenticationInfo.getInstance().username == data.account.username){
                 val delete = binding.gallDetailDelete
