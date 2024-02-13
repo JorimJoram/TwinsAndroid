@@ -1,6 +1,7 @@
 package twins.fan.twinsandroid.viewmodel
 
 import retrofit2.awaitResponse
+import twins.fan.twinsandroid.data.answer.Answer
 import twins.fan.twinsandroid.data.game.GameRecord
 import twins.fan.twinsandroid.data.game.UserVisit
 import twins.fan.twinsandroid.retrofit.RetrofitInstance
@@ -23,4 +24,6 @@ class GameViewModel {
     suspend fun getTeamTotalData(username: String) = gameApi.getTeamTotalData(username).awaitResponse().body()
     suspend fun getAnswerCntByDate(gameDate: String) = answerApi.getAnswerCntByDate(gameDate).awaitResponse().body()
     suspend fun getAnswerList(gameDate: String) = gameApi.getAnswerList(gameDate).awaitResponse().body()
+    suspend fun deleteAnswerById(answerId: Long) = answerApi.deleteAnswerById(answerId).awaitResponse().body()
+    suspend fun createAnswer(answer: Answer) = answerApi.createAnswer(answer).awaitResponse().body()
 }

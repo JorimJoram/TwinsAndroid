@@ -25,14 +25,14 @@
                 android:src="@drawable/baseline_account_circle_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="Account" />
+                android:contentDescription="Account"/>
 
             <TextView
                 android:id="@+id/gall_detail_accountUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Account"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textColor="@color/black"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
@@ -56,10 +56,10 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:text="삭제"
+                android:textSize="16dp"
                 android:textColor="@color/twins_red"
                 android:layout_marginTop="14dp"
                 android:layout_marginStart="10dp"
-                android:textSize="16dp"
                 app:layout_constraintStart_toEndOf="@id/gall_detail_date"
                 app:layout_constraintTop_toTopOf="parent" />
 

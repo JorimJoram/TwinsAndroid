@@ -25,6 +25,13 @@ fun String.toFormattedDate(): StringBuilder{
     return result
 }
 
+fun setCreateDateForm(createdDate:String): StringBuilder {
+    val result = StringBuilder()
+    val createdDateSplit = createdDate.split("T")
+    result.append("${createdDateSplit[0]} ${createdDateSplit[1].split(".")[0]}")
+    return result
+}
+
 fun scoreLocate(isLGHome: Boolean, lgScore: List<String>, versusScore: List<String>): String {
     val visitScore = if(isLGHome) versusScore[versusScore.size-4] else lgScore[lgScore.size-4]
     val homeScore = if(isLGHome) lgScore[lgScore.size-4] else versusScore[versusScore.size-4]

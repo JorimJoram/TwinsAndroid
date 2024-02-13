@@ -1,8 +1,6 @@
 package twins.fan.twinsandroid.adapter
 
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +9,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.data.gall.Gallery
-import twins.fan.twinsandroid.databinding.FragmentGalleryDetailBinding
 import twins.fan.twinsandroid.databinding.ItemViewBinding
 import twins.fan.twinsandroid.fragment.main.gallery.GalleryDetailFragment
 

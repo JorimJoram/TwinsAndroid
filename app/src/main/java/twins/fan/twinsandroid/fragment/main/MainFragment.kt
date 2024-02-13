@@ -51,17 +51,13 @@ class MainFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
         return binding.root
     }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        Glide.with(requireContext())
-            .load(R.raw.twins)
-            .into(binding.mainWinRateTeamImage) //TODO("라이프사이클 확인하고 충분한 근거를 가지고 배치해주시기 바랍니다.222222")
-    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.mainWinRateContainer.setOnClickListener(goSearch)
         binding.mainGameToRecord.setOnClickListener(toGameDetail)
+        Glide.with(requireContext())
+            .load(R.raw.twins)
+            .into(binding.mainWinRateTeamImage) //TODO("라이프사이클 확인하고 충분한 근거를 가지고 배치해주시기 바랍니다.222222")
     }
     override fun onResume() {
         super.onResume()

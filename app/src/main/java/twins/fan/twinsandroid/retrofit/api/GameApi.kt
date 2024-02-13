@@ -21,7 +21,7 @@ interface GameApi {
     fun getUserVisitList(@Query("username")username: String, @Query("date")yearMonth:String): Call<List<UserVisit>>
     @POST("/game/api/visit/create")
     fun createUserVisit(@Body userVisit: UserVisit): Call<UserVisit>
-    @GET("/game/api/visit/last")
+    @GET("/game/api/visit/recent") //확인
     fun getRecentUserVisit(@Query("username")username: String): Call<GameRecord>
     @GET("/game/api/visit/single")
     fun getUserVisitByDate(@Query("username") username: String, @Query("date")date: String): Call<Boolean>
@@ -29,11 +29,11 @@ interface GameApi {
     fun getUserVisitCntByDate(@Query("date")date: String): Call<Int>
     @DELETE("/game/api/visit/delete")
     fun deleteUserVisit(@Query("username") username:String, @Query("gameDate")gameDate:String):Call<Void>
-    @GET("/game/api/batter/total")
+    @GET("/game/api/batter/total") //해결
     fun getUserTotalData(@Query("username")username:String): Call<List<TotalDetailRecord>>
     @GET("/game/api/batter/detail")
     fun getBatterDetailByGameRecordId(@Query("date")date: String): Call<List<BatterDetailRecord>>
-    @GET("/game/api/team/total")
+    @GET("/game/api/team/batter/total") //확인
     fun getTeamTotalData(@Query("username")username: String): Call<TotalDetailRecord>
     @GET("/game/api/answer/list")
     fun getAnswerList(@Query("date") gameDate: String): Call<List<Answer>>

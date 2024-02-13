@@ -6,8 +6,11 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/answer_item_image"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:src="@drawable/baseline_account_circle_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -15,7 +18,55 @@
         android:id="@+id/answer_item_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:text="Account"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
         app:layout_constraintStart_toEndOf="@id/answer_item_image"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/answer_item_createDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="9999.99.99"
+        android:layout_marginStart="15dp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@id/answer_item_username"
+        app:layout_constraintBottom_toBottomOf="@id/answer_item_username"
+        app:layout_constraintTop_toTopOf="@id/answer_item_username" />
+
+    <TextView
+        android:id="@+id/answer_item_deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="삭제"
+        android:textColor="@color/twins_red"
+        android:layout_marginStart="10dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@id/answer_item_createDate"
+        app:layout_constraintBottom_toBottomOf="@id/answer_item_username"
+        app:layout_constraintTop_toTopOf="@id/answer_item_username"/>
+
+    <TextView
+        android:id="@+id/answer_item_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintWidth_percent="0.75"
+        android:layout_marginTop="5dp"
+        android:text="content"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@id/answer_item_username"
+        app:layout_constraintTop_toBottomOf="@id/answer_item_username"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#565656"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/answer_item_content" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
