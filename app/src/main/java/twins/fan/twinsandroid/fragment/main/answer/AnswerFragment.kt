@@ -1,6 +1,8 @@
 package twins.fan.twinsandroid.fragment.main.answer
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +19,7 @@ import twins.fan.twinsandroid.adapter.TestListener
 import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.data.answer.Answer
 import twins.fan.twinsandroid.databinding.FragmentAnswerBinding
+import twins.fan.twinsandroid.viewmodel.GallViewModel
 import twins.fan.twinsandroid.viewmodel.GameViewModel
 import java.time.LocalDateTime
 
@@ -26,13 +29,20 @@ import java.time.LocalDateTime
  */
 class AnswerFragment() : Fragment(), TestListener {
     private lateinit var binding:FragmentAnswerBinding
+
     private var gameDate = ""
+    private var gallId = -1L
+    private var isGameDetail = false
+
     private val gameViewModel = GameViewModel()
+    private val gallViewModel = GallViewModel()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        gameDate = arguments?.getString("gameDate")!!
+        gameDate = arguments?.getString("gameDate") ?: ""
+        gallId = arguments?.getLong("gallId") ?: -1L
+        isGameDetail = gameDate.isNotBlank() //게임 종합 프레그먼트인지 확인
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_answer, container, false)
         return binding.root
     }
@@ -46,20 +56,23 @@ class AnswerFragment() : Fragment(), TestListener {
         super.onResume()
 
         lifecycleScope.launch {
-            val answerList = gameViewModel.getAnswerList(gameDate)!!
+            val answerList = if(isGameDetail) gameViewModel.getAnswerList(gameDate)!! else gallViewModel.getAnswerByGallId(gallId)!!
             setAnswerList(answerList)
         }
     }
 
     private val createAnswer = OnClickListener{
-        val answer = Answer(accountUsername = AuthenticationInfo.getInstance().username!!, accountImage = "", gameRecordGameDate = gameDate, content = binding.answerEditText.text.toString())
+        val answer = if(isGameDetail) Answer(accountUsername = AuthenticationInfo.getInstance().username!!, accountImage = "", gameRecordGameDate = gameDate, content = binding.answerEditText.text.toString()) else Answer(accountUsername = AuthenticationInfo.getInstance().username!!, accountImage = "", galleryId = gallId, content = binding.answerEditText.text.toString())
         lifecycleScope.launch{
-            val answerList = gameViewModel.createAnswer(answer)!!
+            val answerList = if(isGameDetail) gameViewModel.createAnswer(answer)!! else gallViewModel.createAnswer(answer)!!
             binding.answerEditText.setText("")
             setAnswerList(answerList)
         }
     }
 
+    /**
+     * 댓글 붙이기
+     */
     private fun setAnswerList(answerList:List<Answer>){
         binding.answerList.layoutManager = LinearLayoutManager(context) //이거 꼭 있어야 한답니다
         val answerAdapter = AnswerRecyclerAdapter(answerList, requireContext(), this)
@@ -69,10 +82,9 @@ class AnswerFragment() : Fragment(), TestListener {
 
     override fun onDelete(answer: Answer) {
         lifecycleScope.launch {
-            gameViewModel.deleteAnswerById(answer.id!!)
+            val answerList = if(isGameDetail) gameViewModel.deleteAnswerById(answer.id!!, answer.gameRecordGameDate!!) else gallViewModel.deleteAnswer(answer.id!!, answer.galleryId!!)
             Toast.makeText(context, "삭제되었습니다.", Toast.LENGTH_LONG).show()
-            val answerList = gameViewModel.getAnswerList(gameDate)!!
-            setAnswerList(answerList)
+            setAnswerList(answerList!!)
         }
     }
 }

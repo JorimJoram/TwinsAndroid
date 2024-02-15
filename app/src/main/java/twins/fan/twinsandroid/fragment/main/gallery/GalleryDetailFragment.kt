@@ -10,6 +10,7 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -18,6 +19,7 @@ import twins.fan.twinsandroid.BuildConfig
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.databinding.FragmentGalleryDetailBinding
+import twins.fan.twinsandroid.fragment.main.answer.AnswerFragment
 import twins.fan.twinsandroid.viewmodel.AccountViewModel
 import twins.fan.twinsandroid.viewmodel.GallViewModel
 
@@ -30,15 +32,36 @@ class GalleryDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         gallId = arguments?.getLong("id")!!
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_gallery_detail, container, false)
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.gallDetailCommentContainer.setOnClickListener(toComment)
+    }
+
     override fun onResume() {
         super.onResume()
         getDetail()
+        setComment()
+    }
+    private fun setComment(){
+        lifecycleScope.launch {
+            val cnt = gallViewModel.getAnswerCntByGallId(gallId)
+            binding.gallDetailComment.text = "댓글 $cnt"
+        }
+    }
+
+    private val toComment = OnClickListener {
+        val bundle = Bundle()
+        bundle.putLong("gallId", gallId)
+
+        val transaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.main_frameLayout, AnswerFragment().apply { arguments = bundle })
+        transaction.addToBackStack("GALL_ANSWER")
+        transaction.commitAllowingStateLoss()
     }
 
     private fun getDetail(){
@@ -58,9 +81,10 @@ class GalleryDetailFragment : Fragment() {
             binding.gallDetailTitle.text = data.title
             binding.gallDetailContent.text = data.content
 
-            Glide.with(requireContext())
-                .load(BuildConfig.myUrl+accountViewModel.getAccountImage(data.account.username)!!.path)
-                .into(binding.gallDetailAccountImage)
+            if(accountViewModel.getAccountImage(data.account.username)!!.path.isNotBlank())
+                Glide.with(requireContext())
+                    .load(BuildConfig.myUrl+accountViewModel.getAccountImage(data.account.username)!!.path)
+                    .into(binding.gallDetailAccountImage)
 
             if(AuthenticationInfo.getInstance().username == data.account.username){
                 val delete = binding.gallDetailDelete

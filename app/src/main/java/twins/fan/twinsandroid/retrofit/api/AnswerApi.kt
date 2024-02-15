@@ -14,5 +14,5 @@ interface AnswerApi {
     @POST("/game/api/answer/create")
     fun createAnswer(@Body answer:Answer):Call<List<Answer>>
     @DELETE("/game/api/answer/del")
-    fun deleteAnswerById(@Query("id") answerId: Long): Call<Unit>
+    fun deleteAnswerById(@Query("id")answerId:Long, @Query("date")gameDate:String): Call<List<Answer>>
 }

@@ -7,6 +7,7 @@ data class Answer(
     val accountUsername: String,
     val accountImage:String,
     val gameRecordGameDate:String?="",
+    val galleryId:Long? = -1L,
     val content:String,
     val createdDate:String? = LocalDateTime.now().toString()
 )

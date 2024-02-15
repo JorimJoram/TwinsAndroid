@@ -103,7 +103,7 @@ class GameDetailFragment : Fragment() {
 
         val transaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
         transaction.replace(R.id.main_frameLayout, AnswerFragment().apply { arguments = bundle })
-        transaction.addToBackStack("ANSWER")
+        transaction.addToBackStack("GAME_ANSWER")
         transaction.commitAllowingStateLoss()
     }
 
