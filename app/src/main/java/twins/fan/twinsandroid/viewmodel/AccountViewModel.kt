@@ -11,4 +11,8 @@ class AccountViewModel {
     suspend fun sendCode(tel:String) = accountApi.sendCode(tel).awaitResponse().body()
     suspend fun createAccount(account: Account) = accountApi.createAccount(account).awaitResponse()
     suspend fun getAccountImage(username: String) = accountApi.getAccountImage(username).awaitResponse().body()
-}
+
+    suspend fun getAccountByTel(tel:String) = accountApi.getAccountByTel(tel).awaitResponse().body()
+    suspend fun getAccountByUsernameAndTel(username:String, tel:String) = accountApi.getAccountByUsernameAndTel(username, tel).awaitResponse().body()
+    suspend fun updateAccount(account: Account) = accountApi.updateAccount(account).awaitResponse().body()
+ }

@@ -3,6 +3,7 @@ package twins.fan.twinsandroid.retrofit.api
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Query
 import twins.fan.twinsandroid.data.account.Account
@@ -17,4 +18,11 @@ interface AccountApi {
     fun createAccount(@Body account: Account): Call<Account>
     @GET("/account/api/image")
     fun getAccountImage(@Query("username") username:String): Call<AccountImage>
+
+    @GET("/account/api/find/info")
+    fun getAccountByTel(@Query("tel")tel: String): Call<Account>
+    @GET("/account/api/find/check-account")
+    fun getAccountByUsernameAndTel(@Query("username")username: String, @Query("tel")tel: String): Call<Account>
+    @PATCH("/account/api/update/account")
+    fun updateAccount(@Body account: Account): Call<Account>
 }

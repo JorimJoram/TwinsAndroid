@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragment.account.find.FindMainFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/find_main_headTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="140dp"
+                android:text="휴대폰번호 인증"
+                android:textColor="@color/twins_red"
+                android:textSize="30dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/find_main_telInput"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="190dp"
+                android:hint="-을 빼고 입력해주세요"
+                android:backgroundTint="@color/twins_red"
+                android:inputType="phone"
+                android:imeOptions="actionDone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/find_main_headTitle" />
+
+            <Button
+                android:id="@+id/find_main_sendCodeButton"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:text="인증"
+                android:layout_marginTop="190dp"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toEndOf="@+id/find_main_telInput"
+                app:layout_constraintTop_toTopOf="@+id/find_main_headTitle" />
+
+            <EditText
+                android:id="@+id/find_main_telCode"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:hint="인증번호를 입력해주세요"
+                android:backgroundTint="@color/twins_red"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/find_main_telInput" />
+
+            <TextView
+                android:id="@+id/find_main_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/find_main_telCode"
+                android:textColor="@color/twins_red"
+                android:textSize="15sp"/>
+
+            <Button
+                android:id="@+id/find_main_telCodeCheck"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:text="확인"
+                app:layout_constraintStart_toStartOf="@+id/find_main_sendCodeButton"
+                app:layout_constraintTop_toBottomOf="@+id/find_main_sendCodeButton" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/find_main_lottieView"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="false"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/loading_lottie"
+                android:visibility="gone" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/find_main_nextContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <Button
+                    android:id="@+id/find_main_usernameButton"
+                    android:layout_width="0dp"
+                    app:layout_constraintWidth_percent="0.45"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="아이디"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/find_main_passwordButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="비밀번호"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintStart_toEndOf="@id/find_main_usernameButton"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.45" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</layout>

@@ -2,7 +2,7 @@ package twins.fan.twinsandroid.adapter
 
 import twins.fan.twinsandroid.data.answer.Answer
 
-interface TestListener {
+interface GalleryDeleteListener {
     
     fun onDelete(answer:Answer)
 }

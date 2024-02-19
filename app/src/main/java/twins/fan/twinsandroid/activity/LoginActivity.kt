@@ -12,6 +12,7 @@ import okhttp3.Headers
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.databinding.ActivityLoginBinding
+import twins.fan.twinsandroid.exception.BlankInputException
 import twins.fan.twinsandroid.viewmodel.LoginViewModel
 import java.net.ProtocolException
 import java.net.SocketTimeoutException
@@ -31,22 +32,30 @@ class LoginActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         loginBinding.loginLoginButton.setOnClickListener(loginListener)
-        loginBinding.loginAccountButton.setOnClickListener(OnClickListener {
+        loginBinding.loginAccountButton.setOnClickListener {
             val its = Intent(this.applicationContext, AccountActivity::class.java)
             startActivity(its)
-        })
+        }
+        loginBinding.loginFindAccount.setOnClickListener{
+            val its = Intent(this.applicationContext, FindActivity::class.java)
+            startActivity(its)
+        }
         Glide.with(this).load(R.raw.lg_twins).into(loginBinding.loginMainLogo)
     }
 
     private val loginListener = OnClickListener{
+        val username = loginBinding.loginUsername.text.toString()
+        val password = loginBinding.loginPassword.text.toString()
+        if(username.isBlank() || password.isBlank()) showFailCode(BlankInputException("아이디나 비번 안 쓴 경우"))else sendLogin()
+    }
+    private fun sendLogin(){
         val loadingAnimation = loginBinding.loginLottieView
         loadingAnimation.visibility = View.VISIBLE
         loadingAnimation.playAnimation()
 
         lifecycleScope.launch{
-            val username = loginBinding.loginUsername.text.toString()
             try {
-                val result = loginViewModel.loginProcess(username, loginBinding.loginPassword.text.toString())
+                val result = loginViewModel.loginProcess(loginBinding.loginUsername.text.toString(), loginBinding.loginPassword.text.toString())
                 if(result.isSuccessful) { checkResult(result.headers(), result.body()!!) }
                 else{ showFailCode(java.lang.Exception("isNotSuccessful")) }
             } catch (e: SocketTimeoutException){
@@ -63,6 +72,7 @@ class LoginActivity : AppCompatActivity() {
         when(e){
             is SocketTimeoutException -> loginBinding.usernameMsg.text = "서버가 아직 열리지 않았습니다.\n잠시후에 다시 이용해주세요."
             is ProtocolException -> loginBinding.usernameMsg.text = "인터넷 연결을 다시 확인해주세요"
+            is BlankInputException -> loginBinding.usernameMsg.text = "아이디와 비밀번호를 모두 입력해주세요"
             else -> loginBinding.usernameMsg.text = "다시 시도해주세요"
         }
     }

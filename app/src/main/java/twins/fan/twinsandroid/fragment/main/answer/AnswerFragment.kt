@@ -1,33 +1,36 @@
 package twins.fan.twinsandroid.fragment.main.answer
 
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 import twins.fan.twinsandroid.R
+import twins.fan.twinsandroid.activity.MainActivity
 import twins.fan.twinsandroid.adapter.AnswerRecyclerAdapter
-import twins.fan.twinsandroid.adapter.TestListener
+import twins.fan.twinsandroid.adapter.GalleryDeleteListener
 import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.data.answer.Answer
 import twins.fan.twinsandroid.databinding.FragmentAnswerBinding
 import twins.fan.twinsandroid.viewmodel.GallViewModel
 import twins.fan.twinsandroid.viewmodel.GameViewModel
-import java.time.LocalDateTime
 
 /**
  * 아마도 답변 부분은 재사용될 가능성이 높아서 따로 패키지 파서 작성합니다
  * 리팩토링하면서 변경점 있다면 삭제해주시면 됩니다.
  */
-class AnswerFragment() : Fragment(), TestListener {
+class AnswerFragment() : Fragment(), GalleryDeleteListener {
     private lateinit var binding:FragmentAnswerBinding
 
     private var gameDate = ""
@@ -36,9 +39,11 @@ class AnswerFragment() : Fragment(), TestListener {
 
     private val gameViewModel = GameViewModel()
     private val gallViewModel = GallViewModel()
+    private val mainActivity = MainActivity()
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+    inflater: LayoutInflater, container: ViewGroup?,
+    savedInstanceState: Bundle?
     ): View? {
         gameDate = arguments?.getString("gameDate") ?: ""
         gallId = arguments?.getLong("gallId") ?: -1L
@@ -56,8 +61,7 @@ class AnswerFragment() : Fragment(), TestListener {
         super.onResume()
 
         lifecycleScope.launch {
-            val answerList = if(isGameDetail) gameViewModel.getAnswerList(gameDate)!! else gallViewModel.getAnswerByGallId(gallId)!!
-            setAnswerList(answerList)
+            setAnswerList(if(isGameDetail) gameViewModel.getAnswerList(gameDate)!! else gallViewModel.getAnswerByGallId(gallId)!!)
         }
     }
 
@@ -71,7 +75,7 @@ class AnswerFragment() : Fragment(), TestListener {
     }
 
     /**
-     * 댓글 붙이기
+     * 어댑터에 댓글 붙이기
      */
     private fun setAnswerList(answerList:List<Answer>){
         binding.answerList.layoutManager = LinearLayoutManager(context) //이거 꼭 있어야 한답니다

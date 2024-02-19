@@ -3,16 +3,9 @@ package twins.fan.twinsandroid.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnClickListener
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import twins.fan.twinsandroid.BuildConfig
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.data.account.AuthenticationInfo
@@ -25,7 +18,7 @@ import kotlin.properties.Delegates
 class AnswerRecyclerAdapter(
     private val answerList:List<Answer>,
     private val context:Context,
-    private val deleteListener:TestListener
+    private val deleteListener:GalleryDeleteListener
 ): RecyclerView.Adapter<AnswerRecyclerAdapter.AnswerViewHolder>() {
     inner class AnswerViewHolder(val binding:ItemAnswerBinding):RecyclerView.ViewHolder(binding.root){
         private val userInfo = AuthenticationInfo.getInstance()

@@ -2,6 +2,7 @@ package twins.fan.twinsandroid.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.FragmentTransaction
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.databinding.ActivityMainBinding
