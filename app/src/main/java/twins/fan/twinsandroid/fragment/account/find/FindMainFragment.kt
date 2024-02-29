@@ -91,7 +91,7 @@ class FindMainFragment : Fragment() {
                 code = accountViewModel.sendCode("f$tel")!!
                 when(code){
                     "-1" -> showMsg(-1)
-                    "-2" -> showMsg(-4)
+                    "-3" -> showMsg(-5)
                     else -> {
                         countDown()
                         binding.findMainMsg.text = code //TODO("커밋하기 전에 지워라")
@@ -123,6 +123,7 @@ class FindMainFragment : Fragment() {
             -2 -> "인증번호를 다시 확인해주세요"
             -3 -> "인터넷 연결 확인 후 다시 시도해주세요"
             -4 -> "이미 등록된 전화번호입니다"
+            -5 -> "등록되지 않은 전화번호입니다."
             else -> "다시 시도해주세요"
         }
         if(code > 1){

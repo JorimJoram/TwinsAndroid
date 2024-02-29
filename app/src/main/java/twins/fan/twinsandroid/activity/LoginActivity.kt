@@ -1,8 +1,10 @@
 package twins.fan.twinsandroid.activity
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.lifecycle.lifecycleScope
@@ -10,9 +12,11 @@ import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 import okhttp3.Headers
 import twins.fan.twinsandroid.R
+import twins.fan.twinsandroid.data.account.AccountImage
 import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.databinding.ActivityLoginBinding
 import twins.fan.twinsandroid.exception.BlankInputException
+import twins.fan.twinsandroid.viewmodel.AccountViewModel
 import twins.fan.twinsandroid.viewmodel.LoginViewModel
 import java.net.ProtocolException
 import java.net.SocketTimeoutException
@@ -21,6 +25,7 @@ import java.util.HashMap
 class LoginActivity : AppCompatActivity() {
     private lateinit var loginBinding: ActivityLoginBinding
     private val loginViewModel = LoginViewModel()
+    private val accountViewModel = AccountViewModel()
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,13 +91,24 @@ class LoginActivity : AppCompatActivity() {
         }else{
             val cookieHeader = headers["Set-Cookie"]?.split(";")?.get(0)
             val authInstance = AuthenticationInfo.getInstance()
+            Log.d(TAG, "authentication: $body")
+
             authInstance.username = body["username"].toString()
             authInstance.authorities = body["authorities"] as List<String>?
             authInstance.jSessionId = cookieHeader?.split("=")?.get(1)
 
+            setAccountImage()
+
             val it = Intent(this, MainActivity::class.java)
             startActivity(it)
             finish()
+        }
+    }
+
+    private fun setAccountImage(){
+        lifecycleScope.launch {
+            val accountImage = accountViewModel.getAccountImage(AuthenticationInfo.getInstance().username!!)!!
+            AccountImage.getInstance().path = accountImage.path
         }
     }
 }

@@ -39,12 +39,12 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.menu_account -> {
                     fragmentTransaction.replace(R.id.main_frameLayout, MyAccountFragment())
-                        .addToBackStack("ACCOUNT")
+                        .addToBackStack("ACCOUNT_MAIN")
                         .commitAllowingStateLoss()
                 }
                 R.id.menu_gallery -> {
                     fragmentTransaction.replace(R.id.main_frameLayout, GalleryFragment())
-                        .addToBackStack("TEST")
+                        .addToBackStack("GALLERY")
                         .commitAllowingStateLoss()
                 }
 

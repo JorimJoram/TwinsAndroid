@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragment.main.my.ChangeInfoFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/account_change_head"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="프로필 변경"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/account_change_saveButton"
+                app:layout_constraintBottom_toBottomOf="@+id/account_change_saveButton"/>
+
+            <Button
+                android:id="@+id/account_change_saveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="변경"
+                android:enabled="false"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/account_change_accountImage"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/baseline_account_circle_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/account_change_head"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/account_change_imageChangeButton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+
+                android:src="@drawable/baseline_add_24"
+                app:civ_circle_background_color="@color/twins_red"
+
+                android:layout_marginTop="90dp"
+                android:layout_marginStart="90dp"
+                app:layout_constraintBottom_toBottomOf="@id/account_change_accountImage"
+                app:layout_constraintEnd_toEndOf="@id/account_change_accountImage"
+                app:layout_constraintStart_toStartOf="@id/account_change_accountImage"
+                app:layout_constraintTop_toTopOf="@id/account_change_accountImage"/>
+
+            <TextView
+                android:id="@+id/account_change_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Username"
+                android:textColor="@color/black"
+                android:textSize="23sp"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/account_change_accountImage" />
+
+            <TextView
+                android:id="@+id/account_change_telHead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="전화번호"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/account_change_username" />
+
+            <EditText
+                android:id="@+id/account_change_telInput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/account_change_telHead"
+                app:layout_constraintWidth_percent="0.7" />
+            <TextView
+                android:id="@+id/account_change_telMsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="msg"
+                android:textColor="@color/twins_red"
+                app:layout_constraintStart_toStartOf="@id/account_change_telInput"
+                app:layout_constraintTop_toBottomOf="@id/account_change_telInput" />
+            <Button
+                android:id="@+id/account_change_sendCodeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="인증"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/account_change_telInput"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/account_change_telInput" />
+            <EditText
+                android:id="@+id/account_change_telCodeInput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:hint="수정 후 인증번호를 입력해주세요"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/account_change_telMsg"
+                app:layout_constraintWidth_percent="0.7" />
+            <TextView
+                android:id="@+id/account_change_telConfirmMsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="msg"
+                android:textColor="@color/twins_red"
+                app:layout_constraintStart_toStartOf="@id/account_change_telCodeInput"
+                app:layout_constraintTop_toBottomOf="@id/account_change_telCodeInput" />
+            <Button
+                android:id="@+id/account_change_codeCheckButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="확인"
+                android:layout_marginEnd="10dp"
+                android:enabled="false"
+                app:layout_constraintBottom_toBottomOf="@+id/account_change_telCodeInput"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/account_change_telCodeInput" />
+
+            <TextView
+                android:id="@+id/account_change_passwordHead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비밀번호"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/account_change_telConfirmMsg" />
+
+            <EditText
+                android:id="@+id/account_change_passwordInput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:hint="새 비밀번호"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/account_change_passwordHead"
+                app:layout_constraintWidth_percent="0.7" />
+            <EditText
+                android:id="@+id/account_change_passwordConfirmInput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:hint="새 비밀번호 확인"
+                app:layout_constraintTop_toBottomOf="@+id/account_change_passwordInput"
+                app:layout_constraintWidth_percent="0.7" />
+            <TextView
+                android:id="@+id/account_change_passwordMsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="msg"
+                android:textColor="@color/twins_red"
+                app:layout_constraintStart_toStartOf="@id/account_change_passwordConfirmInput"
+                app:layout_constraintTop_toBottomOf="@id/account_change_passwordConfirmInput" />
+            <Button
+                android:id="@+id/account_change_passwordCheckButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="확인"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/account_change_passwordConfirmInput"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/account_change_passwordConfirmInput" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</layout>

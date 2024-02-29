@@ -20,6 +20,7 @@ import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.databinding.FragmentGalleryDetailBinding
 import twins.fan.twinsandroid.fragment.main.answer.AnswerFragment
+import twins.fan.twinsandroid.util.CacheClear
 import twins.fan.twinsandroid.viewmodel.AccountViewModel
 import twins.fan.twinsandroid.viewmodel.GallViewModel
 
@@ -80,6 +81,8 @@ class GalleryDetailFragment : Fragment() {
             binding.gallDetailDate.text = "${ date.split("T")[0].replace("-", ".") } ${ date.split("T")[1].split(".")[0] }"
             binding.gallDetailTitle.text = data.title
             binding.gallDetailContent.text = data.content
+
+            CacheClear(requireContext())
 
             if(accountViewModel.getAccountImage(data.account.username)!!.path.isNotBlank())
                 Glide.with(requireContext())
