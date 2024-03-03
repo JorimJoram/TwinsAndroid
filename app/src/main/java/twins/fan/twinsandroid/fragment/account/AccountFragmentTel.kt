@@ -1,11 +1,9 @@
 package twins.fan.twinsandroid.fragment.account
 
 import android.content.ContentValues.TAG
-import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -13,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import twins.fan.twinsandroid.R
@@ -71,7 +70,7 @@ class AccountFragmentTel : Fragment() {
             }catch (e:SocketTimeoutException){
                 showMsg(-3)
             }catch (e:Exception){
-                Log.e(TAG, "sendCode: ${e.message}", )
+                Log.e(TAG, "sendCode: ${e.message}")
                 binding.telSendCodeButton.isEnabled = true
                 showMsg(-100)
             }finally {
@@ -139,7 +138,7 @@ class AccountFragmentTel : Fragment() {
     }
 
     private fun countDown(){
-        val time = 5L;
+        val time = 5L
         val timer = object: CountDownTimer(time * 60 * 1000, 1000){
             override fun onTick(remainTime: Long) {
                 binding.telSendCodeButton.isEnabled = false

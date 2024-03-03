@@ -1,16 +1,13 @@
 package twins.fan.twinsandroid.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.databinding.ActivityAccountBinding
-import twins.fan.twinsandroid.fragment.account.AccountFragmentPassword
 import twins.fan.twinsandroid.fragment.account.AccountFragmentUsername
 
 class AccountActivity : AppCompatActivity() {

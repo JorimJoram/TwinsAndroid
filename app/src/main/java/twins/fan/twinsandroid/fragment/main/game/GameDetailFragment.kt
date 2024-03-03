@@ -1,21 +1,18 @@
 package twins.fan.twinsandroid.fragment.main.game
 
 import android.content.ContentValues.TAG
-import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlinx.coroutines.launch
@@ -33,7 +30,6 @@ import twins.fan.twinsandroid.util.checkLogo
 import twins.fan.twinsandroid.util.scoreLocate
 import twins.fan.twinsandroid.util.toFormattedDate
 import twins.fan.twinsandroid.viewmodel.GameViewModel
-import kotlin.math.log
 
 class GameDetailFragment : Fragment() {
     private lateinit var binding:FragmentGameDetailBinding

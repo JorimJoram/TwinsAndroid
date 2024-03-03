@@ -2,12 +2,8 @@ package twins.fan.twinsandroid.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.compose.ui.layout.Layout
 import androidx.recyclerview.widget.RecyclerView
-import twins.fan.twinsandroid.data.game.BatterDetailRecord
-import twins.fan.twinsandroid.data.game.GameRecord
 import twins.fan.twinsandroid.databinding.GameScoreItemBinding
-import twins.fan.twinsandroid.databinding.ItemViewBinding
 
 class ScoreAdapter(
     private val isHome:Boolean,

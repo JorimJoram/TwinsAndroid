@@ -3,7 +3,6 @@ package twins.fan.twinsandroid.fragment.main
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -12,12 +11,12 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.adapter.BatterMainListAdapter
@@ -44,7 +43,6 @@ class MainFragment : Fragment() {
     private val gameViewModel = GameViewModel()
     private val gallViewModel = GallViewModel()
 
-    private lateinit var batterDetailDataList:List<TotalDetailRecord>
     private lateinit var recentGameRecord:GameRecord
 
     private val userInfo:AuthenticationInfo = AuthenticationInfo.getInstance()

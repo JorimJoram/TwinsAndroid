@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.data.game.TotalDetailRecord
-import twins.fan.twinsandroid.fragment.main.MainFragment
 
 class BatterMainListAdapter(
     private val fragment:Fragment,

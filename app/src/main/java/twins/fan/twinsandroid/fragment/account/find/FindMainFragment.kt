@@ -1,19 +1,17 @@
 package twins.fan.twinsandroid.fragment.account.find
 
-import android.app.Activity
 import android.content.ContentValues
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import twins.fan.twinsandroid.R
@@ -102,7 +100,7 @@ class FindMainFragment : Fragment() {
             }catch (e: SocketTimeoutException){
                 showMsg(-3)
             }catch (e:Exception){
-                Log.e(ContentValues.TAG, "sendCode: ${e.message}", )
+                Log.e(ContentValues.TAG, "sendCode: ${e.message}")
                 binding.findMainSendCodeButton.isEnabled = true
                 showMsg(-100)
             }
@@ -139,7 +137,7 @@ class FindMainFragment : Fragment() {
      * 재사용 AccountFragmentTel
      */
     private fun countDown(){
-        val time = 5L;
+        val time = 5L
         val timer = object: CountDownTimer(time * 60 * 1000, 1000){
             override fun onTick(remainTime: Long) {
                 binding.findMainSendCodeButton.isEnabled = false

@@ -5,14 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.PagerAdapter
 import twins.fan.twinsandroid.R
 
 class MainViewPagerAdapter(
     private val viewList:List<String>
 ):RecyclerView.Adapter<MainViewPagerAdapter.ViewHolder>() {
     inner class ViewHolder(val view:View): RecyclerView.ViewHolder(view){
-        val textView = view.findViewById<TextView>(R.id.recycle_item_content)
+        val textView = view.findViewById<TextView>(R.id.recycle_item_content)!!
     }
 
     override fun getItemViewType(position: Int): Int = position%viewList.size

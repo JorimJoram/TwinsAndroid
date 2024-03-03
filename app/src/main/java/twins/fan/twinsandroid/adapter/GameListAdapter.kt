@@ -36,7 +36,7 @@ class GameListAdapter(
     private val gameViewModel = GameViewModel()
     private val userInfo = AuthenticationInfo.getInstance()
 
-    private fun checkSwitch(view:View, game:GameRecord, ){
+    private fun checkSwitch(view: View, game: GameRecord){
         val switch = view.findViewById<SwitchCompat>(R.id.game_list_item_switch)
         val visitSet = HashSet(userVisitList)
 

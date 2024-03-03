@@ -1,13 +1,11 @@
 package twins.fan.twinsandroid.fragment.main.game
 
 import android.content.ContentValues.TAG
-import android.content.Context
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +14,7 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.XAxis
@@ -166,7 +165,11 @@ class TeamRecordFragment : Fragment() {
         }
         val dividedList = resultList.map { PieEntry((it/visitGameList.size).toFloat() ) }
         val dataSet = PieDataSet(dividedList, "")
-        dataSet.colors = listOf(resources.getColor(R.color.twins_red, null), resources.getColor(R.color.white, null), resources.getColor(R.color.white, null),)
+        dataSet.colors = listOf(
+            resources.getColor(R.color.twins_red, null),
+            resources.getColor(R.color.white, null),
+            resources.getColor(R.color.white, null),
+        )
         dataSet.setDrawValues(false)
 
         binding.teamRecordWinRateChart.apply {

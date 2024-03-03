@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.storage.CacheResetOnProcessCanceled.enabled
 import java.util.Properties
 
 plugins {

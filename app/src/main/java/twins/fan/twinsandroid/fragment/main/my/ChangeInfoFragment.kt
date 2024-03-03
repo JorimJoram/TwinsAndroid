@@ -1,7 +1,6 @@
 package twins.fan.twinsandroid.fragment.main.my
 
 import android.app.Activity
-import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
@@ -12,7 +11,6 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -21,15 +19,13 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.core.content.PackageManagerCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import twins.fan.twinsandroid.BuildConfig
 import twins.fan.twinsandroid.R
@@ -37,9 +33,6 @@ import twins.fan.twinsandroid.data.account.Account
 import twins.fan.twinsandroid.data.account.AccountImage
 import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.databinding.FragmentChangeInfoBinding
-import twins.fan.twinsandroid.fragment.main.MyAccountFragment
-import twins.fan.twinsandroid.fragment.main.gallery.GalleryCreateFragment
-import twins.fan.twinsandroid.fragment.main.gallery.GalleryDetailFragment
 import twins.fan.twinsandroid.viewmodel.AccountViewModel
 import java.io.File
 import java.net.SocketTimeoutException
@@ -121,14 +114,14 @@ class ChangeInfoFragment : Fragment() {
             }catch (e: SocketTimeoutException){
                 showMsg(-3)
             }catch (e:Exception){
-                Log.e(ContentValues.TAG, "sendCode: ${e.message}", )
+                Log.e(TAG, "sendCode: ${e.message}")
                 binding.accountChangeSendCodeButton.isEnabled = true
                 showMsg(-100)
             }
         }
     }
     private fun countDown(){
-        val time = 5L;
+        val time = 5L
         val timer = object: CountDownTimer(time * 60 * 1000, 1000){
             override fun onTick(remainTime: Long) {
                 binding.accountChangeSendCodeButton.isEnabled = false

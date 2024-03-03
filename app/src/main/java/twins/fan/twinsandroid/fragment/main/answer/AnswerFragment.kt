@@ -1,20 +1,15 @@
 package twins.fan.twinsandroid.fragment.main.answer
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.activity.MainActivity
@@ -39,7 +34,6 @@ class AnswerFragment() : Fragment(), GalleryDeleteListener {
 
     private val gameViewModel = GameViewModel()
     private val gallViewModel = GallViewModel()
-    private val mainActivity = MainActivity()
 
     override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,

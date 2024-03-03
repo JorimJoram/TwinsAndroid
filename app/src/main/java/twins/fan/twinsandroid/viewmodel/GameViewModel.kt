@@ -2,7 +2,6 @@ package twins.fan.twinsandroid.viewmodel
 
 import retrofit2.awaitResponse
 import twins.fan.twinsandroid.data.answer.Answer
-import twins.fan.twinsandroid.data.game.GameRecord
 import twins.fan.twinsandroid.data.game.UserVisit
 import twins.fan.twinsandroid.retrofit.RetrofitInstance
 

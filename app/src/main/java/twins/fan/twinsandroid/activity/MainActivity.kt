@@ -1,14 +1,13 @@
 package twins.fan.twinsandroid.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.databinding.ActivityMainBinding
+import twins.fan.twinsandroid.fragment.main.GalleryFragment
 import twins.fan.twinsandroid.fragment.main.MainFragment
 import twins.fan.twinsandroid.fragment.main.MyAccountFragment
-import twins.fan.twinsandroid.fragment.main.GalleryFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mainBinding: ActivityMainBinding

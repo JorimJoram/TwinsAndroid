@@ -23,7 +23,6 @@ class AnswerRecyclerAdapter(
     inner class AnswerViewHolder(val binding:ItemAnswerBinding):RecyclerView.ViewHolder(binding.root){
         private val userInfo = AuthenticationInfo.getInstance()
         private var answerId by Delegates.notNull<Long>()
-        private val gameViewModel = GameViewModel()
         fun bind(answer: Answer){
             answerId = answer.id!!
             binding.answerItemUsername.text = answer.accountUsername

@@ -1,8 +1,6 @@
 package twins.fan.twinsandroid.data.gall
 
-import androidx.recyclerview.widget.DiffUtil
 import twins.fan.twinsandroid.data.account.Account
-import java.time.LocalDateTime
 
 data class Gallery(
     val id:Long,
