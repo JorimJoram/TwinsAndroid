@@ -13,7 +13,7 @@ class PagingRepositoryImpl(
 ){
     fun getResultList(): Flow<PagingData<Gallery>> {
         return Pager(PagingConfig(pageSize = 20)){
-            PagingSource(gallApi)
+            PagingSource(gallApi, pageSize = 20)
         }.flow
     }
 }

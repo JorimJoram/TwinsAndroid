@@ -7,7 +7,8 @@ import twins.fan.twinsandroid.data.gall.Gallery
 import twins.fan.twinsandroid.retrofit.api.GalleryApi
 
 class PagingSource(
-    private val galleryApi: GalleryApi
+    private val galleryApi: GalleryApi,
+    private val pageSize:Int
 ): PagingSource<Int, Gallery>(){
     override fun getRefreshKey(state: PagingState<Int, Gallery>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -18,7 +19,7 @@ class PagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Gallery> {
         return try{
             val pageIndex = params.key ?: 0
-            val response = galleryApi.getAllByPage(pageIndex).awaitResponse().body()
+            val response = galleryApi.getAllByPage(pageIndex, pageSize).awaitResponse().body()
             val data: List<Gallery> = response?.content ?: listOf()
 
             val nextKey = if (data.isEmpty()) { null } else { pageIndex + 1 }

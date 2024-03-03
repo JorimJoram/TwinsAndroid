@@ -13,7 +13,7 @@ import twins.fan.twinsandroid.data.gall.RequestGallery
 
 interface GalleryApi {
     @GET("/gall/api/gall-list")
-    fun getAllByPage(@Query("page") page:Int): Call<GalleryResponse>
+    fun getAllByPage(@Query("page") page:Int, @Query("page-size")pageSize:Int): Call<GalleryResponse>
     @GET("/gall/api/gall")
     fun getById(@Query("id") id:Long): Call<Gallery>
     @DELETE("/gall/api/delete")

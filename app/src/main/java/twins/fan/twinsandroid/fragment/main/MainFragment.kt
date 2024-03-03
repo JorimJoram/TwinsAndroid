@@ -32,20 +32,23 @@ import twins.fan.twinsandroid.fragment.main.game.TeamRecordFragment
 import twins.fan.twinsandroid.util.checkLogo
 import twins.fan.twinsandroid.util.pitchResult
 import twins.fan.twinsandroid.util.scoreLocate
+import twins.fan.twinsandroid.util.setMainClicked
 import twins.fan.twinsandroid.util.toFormattedDate
+import twins.fan.twinsandroid.viewmodel.GallViewModel
 import twins.fan.twinsandroid.viewmodel.GameViewModel
 import twins.fan.twinsandroid.viewmodel.LoginViewModel
 
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
-    private var isClicked = false
     private val loginViewModel=LoginViewModel()
     private val gameViewModel = GameViewModel()
+    private val gallViewModel = GallViewModel()
 
     private lateinit var batterDetailDataList:List<TotalDetailRecord>
-    private lateinit var userVisitResultList:List<String>
     private lateinit var recentGameRecord:GameRecord
 
+    private val userInfo:AuthenticationInfo = AuthenticationInfo.getInstance()
+    private var isBackButtonClicked = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,19 +68,72 @@ class MainFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        isClicked = false
+        isBackButtonClicked = false
         requireActivity().onBackPressedDispatcher.addCallback(this, backButtonEvent)
 
-        val bottomBar = activity?.findViewById<BottomNavigationView>(R.id.main_bottom_nav)
-        bottomBar?.menu?.findItem(R.id.menu_main)?.isChecked = true
+        setMainClicked(requireActivity())
+
+        setHeadViewPager()
+
+        setTeamBatterTotal()
+        setTeamGameTotal()
+        setBatterDetail()
+        setGalleryList()
 
         getMyData()
 
-        binding.mainViewPager.adapter = MainViewPagerAdapter(listOf("test1", "test2"))
-        binding.mainViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-
         removeOpenedFragment()
     }
+    private fun setHeadViewPager(){
+        binding.mainViewPager.adapter = MainViewPagerAdapter(listOf("test1", "test2"))
+        binding.mainViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+    }
+
+    /**
+     * 데이터 가져오기 성공
+     */
+    private fun setTeamBatterTotal(){
+        lifecycleScope.launch {
+            val teamTotalRecord = gameViewModel.getTeamTotalData(userInfo.username!!)!!
+            binding.mainRecordAvg.text = teamTotalRecord.avg
+            binding.mainRecordObp.text = teamTotalRecord.obp
+            binding.mainRecordSlg.text = teamTotalRecord.slg
+        }
+    }
+    private fun setTeamGameTotal(){
+        lifecycleScope.launch {
+            val userVisitResult = gameViewModel.getUserGameResult(userInfo.username!!)!!
+            putGameResult(userVisitResult)
+            Log.i(TAG, "userVisitResult: $userVisitResult")
+        }
+    }
+    private fun setBatterDetail(){
+        lifecycleScope.launch {
+            val batterResult = gameViewModel.getTotalDetailData(userInfo.username!!)!!
+            if(batterResult.size > 3) {
+                val sortedByPoint = batterResult.sortedByDescending { it.point }.subList(0, 3)
+                binding.mainRecordList.adapter =
+                    BatterMainListAdapter(this@MainFragment, sortedByPoint)
+            }
+        }
+    }
+    private fun setGalleryList(){
+        lifecycleScope.launch {
+            val gallList = gallViewModel.getFewGallery(0, 3)
+            Log.i(TAG, "GalleryList: $gallList")
+        }
+    }
+
+    private fun removeOpenedFragment(){
+        val fragmentManager = requireActivity().supportFragmentManager
+        val backStackCount = fragmentManager.backStackEntryCount
+
+        if(backStackCount > 2){
+            val mainFragment = fragmentManager.getBackStackEntryAt(1) //어차피 메인 빼곤 다 닫으면 되는거 아닌가?
+            fragmentManager.popBackStack(mainFragment.id, FragmentManager.POP_BACK_STACK_INCLUSIVE) //앞에 적힌 id값의 프레그먼트를 포함하여 후의 모든 프레그먼트 pop
+        }
+    }
+
     private fun getMyData(){
         val userInfo = AuthenticationInfo.getInstance()
 
@@ -86,16 +142,11 @@ class MainFragment : Fragment() {
         loadingAnimation.playAnimation()
 
         lifecycleScope.launch{
-            batterDetailDataList = gameViewModel.getTotalDetailData(userInfo.username!!)!!
-            userVisitResultList = gameViewModel.getUserGameResult(userInfo.username!!)!!
+            //batterDetailDataList = gameViewModel.getTotalDetailData(userInfo.username!!)!!
             recentGameRecord = gameViewModel.getRecentUserVisit(userInfo.username!!)!!
 
-            if(batterDetailDataList.size > 3) {
-                val sortedByPoint = batterDetailDataList.sortedByDescending { it.point }.subList(0, 3)
-                binding.mainRecordList.adapter =
-                    BatterMainListAdapter(this@MainFragment, sortedByPoint)
-            }
-            putGameResult()
+
+            //putGameResult()
             if(recentGameRecord.id != -1L) {
                 putRecentGameRecord(recentGameRecord)
                 binding.mainRecentGameRecord.gameListItemSwitch.visibility = View.VISIBLE
@@ -108,6 +159,8 @@ class MainFragment : Fragment() {
         loadingAnimation.cancelAnimation()
         loadingAnimation.visibility = View.GONE
     }
+
+
     private fun putRecentGameRecord(recentGameRecord: GameRecord) {
         val lgScoreSplit = recentGameRecord.lgScore.split(",")
         val versusScoreSplit = recentGameRecord.versusScore.split(",")
@@ -139,34 +192,22 @@ class MainFragment : Fragment() {
         binding.mainRecentGameRecord.gameListItemVisitPitchResult.text = pitchGameResult[1][0].toString()
         binding.mainRecentGameRecord.gameListItemVisitPitchResult.setTextColor(pitchGameResult[1][1] as Int)
     }
-    private fun putGameResult(){
-        if(userVisitResultList.isEmpty()){
-            binding.mainWinRateResult.text = "경기를 기록해보세요!"
-            return ;
-        }
+    private fun putGameResult(teamGameResult:List<String>){
         val resultList = mutableListOf(0,0,0)
-        userVisitResultList.forEach {
+        teamGameResult.forEach {
             when(it){
                 "승" -> resultList[0] += 1
                 "패" -> resultList[1] += 1
                 "무" -> resultList[2] += 1
             }
         }
-        var resultText = "${resultList[0]}승 ${resultList[1]}패 "
-        if(resultList[2] > 0) resultText += "${resultList[2]}무 "
-        resultText += "${"%.2f".format((resultList[0].toDouble()/userVisitResultList.size.toDouble()*100))}%"
-
-        binding.mainWinRateResult.text = resultText
+        binding.mainRecordWin.text = resultList[0].toString()
+        binding.mainRecordLose.text = resultList[1].toString()
+        binding.mainRecordDraw.text = resultList[2].toString()
+        binding.mainRecordWinRate.text = "${"%.2f".format((resultList[0].toDouble()/teamGameResult.size.toDouble()*100))}%"
+        binding.mainRecordGameAmount.text = "${teamGameResult.size} G"
     }
-    private fun removeOpenedFragment(){
-        val fragmentManager = requireActivity().supportFragmentManager
-        val backStackCount = fragmentManager.backStackEntryCount
 
-        if(backStackCount > 2){
-            val mainFragment = fragmentManager.getBackStackEntryAt(1) //어차피 메인 빼곤 다 닫으면 되는거 아닌가?
-            fragmentManager.popBackStack(mainFragment.id, FragmentManager.POP_BACK_STACK_INCLUSIVE) //앞에 적힌 id값의 프레그먼트를 포함하여 후의 모든 프레그먼트 pop
-        }
-    }
 
     private val toGameDetail = OnClickListener {
         val transaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
@@ -190,13 +231,14 @@ class MainFragment : Fragment() {
         transaction.addToBackStack("GAME_SEARCH")
         transaction.commitAllowingStateLoss()
     }
+
     private val backButtonEvent = object: OnBackPressedCallback(true){
         override fun handleOnBackPressed() {
-            if(isClicked){
+            if(isBackButtonClicked){
                 requireActivity().finishAffinity()
                 lifecycleScope.launch { loginViewModel.logoutProcess() }
             }
-            isClicked = true
+            isBackButtonClicked = true
             Toast.makeText(requireContext(), "종료하시려면 한 번 더 눌러주세요", Toast.LENGTH_LONG).show()
         }
     }
