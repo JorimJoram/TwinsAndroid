@@ -14,12 +14,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlinx.coroutines.launch
 import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.adapter.BatterMainListAdapter
+import twins.fan.twinsandroid.adapter.GalleryRecyclerAdapter
 import twins.fan.twinsandroid.adapter.MainViewPagerAdapter
 import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.data.game.GameRecord
@@ -41,9 +43,8 @@ class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
     private val loginViewModel=LoginViewModel()
     private val gameViewModel = GameViewModel()
-    private val gallViewModel = GallViewModel()
 
-    private lateinit var recentGameRecord:GameRecord
+    private var recentGameDate = "-1"
 
     private val userInfo:AuthenticationInfo = AuthenticationInfo.getInstance()
     private var isBackButtonClicked = false
@@ -76,9 +77,7 @@ class MainFragment : Fragment() {
         setTeamBatterTotal()
         setTeamGameTotal()
         setBatterDetail()
-        setGalleryList()
-
-        getMyData()
+        setRecentGame()
 
         removeOpenedFragment()
     }
@@ -115,13 +114,6 @@ class MainFragment : Fragment() {
             }
         }
     }
-    private fun setGalleryList(){
-        lifecycleScope.launch {
-            val gallList = gallViewModel.getFewGallery(0, 3)
-            Log.i(TAG, "GalleryList: $gallList")
-        }
-    }
-
     private fun removeOpenedFragment(){
         val fragmentManager = requireActivity().supportFragmentManager
         val backStackCount = fragmentManager.backStackEntryCount
@@ -131,34 +123,18 @@ class MainFragment : Fragment() {
             fragmentManager.popBackStack(mainFragment.id, FragmentManager.POP_BACK_STACK_INCLUSIVE) //앞에 적힌 id값의 프레그먼트를 포함하여 후의 모든 프레그먼트 pop
         }
     }
-
-    private fun getMyData(){
-        val userInfo = AuthenticationInfo.getInstance()
-
-        val loadingAnimation = binding.mainLottieView
-        loadingAnimation.visibility = View.VISIBLE
-        loadingAnimation.playAnimation()
-
-        lifecycleScope.launch{
-            //batterDetailDataList = gameViewModel.getTotalDetailData(userInfo.username!!)!!
-            recentGameRecord = gameViewModel.getRecentUserVisit(userInfo.username!!)!!
-
-
-            //putGameResult()
-            if(recentGameRecord.id != -1L) {
-                putRecentGameRecord(recentGameRecord)
+    private fun setRecentGame(){
+        lifecycleScope.launch {
+            val recentGame = gameViewModel.getRecentUserVisit(userInfo.username!!)!!
+            recentGameDate = recentGame.gameDate
+            if(recentGame.id != -1L) {
+                putRecentGameRecord(recentGame)
                 binding.mainRecentGameRecord.gameListItemSwitch.visibility = View.VISIBLE
-            }else
-                binding.mainRecentGameRecord.gameListItemSwitch.visibility = View.GONE
+            }else binding.mainRecentGameRecord.gameListItemSwitch.visibility = View.GONE
         }
 
         binding.mainRecentGameRecord.gameListItemMatchContainer.setOnClickListener(goDetail)
-
-        loadingAnimation.cancelAnimation()
-        loadingAnimation.visibility = View.GONE
     }
-
-
     private fun putRecentGameRecord(recentGameRecord: GameRecord) {
         val lgScoreSplit = recentGameRecord.lgScore.split(",")
         val versusScoreSplit = recentGameRecord.versusScore.split(",")
@@ -215,7 +191,7 @@ class MainFragment : Fragment() {
     }
     private val goDetail = OnClickListener {
         val bundle = Bundle()
-        bundle.putString("gameDate", recentGameRecord.gameDate)
+        bundle.putString("gameDate", recentGameDate) //TODO("경기 등록이 안되었을 경우를 생각하지 않았음")
 
         val transaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
         transaction.replace(R.id.main_frameLayout, GameDetailFragment().apply { arguments = bundle })
