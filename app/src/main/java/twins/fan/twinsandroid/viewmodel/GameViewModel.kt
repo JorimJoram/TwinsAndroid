@@ -25,4 +25,5 @@ class GameViewModel {
     suspend fun getAnswerList(gameDate: String) = gameApi.getAnswerList(gameDate).awaitResponse().body()
     suspend fun deleteAnswerById(answerId:Long, gameDate:String) = answerApi.deleteAnswerById(answerId, gameDate).awaitResponse().body()
     suspend fun createAnswer(answer: Answer) = answerApi.createAnswer(answer).awaitResponse().body()
+    suspend fun getMyGameRecord(username: String) = gameApi.getMyGameRecord(username).awaitResponse().body()
 }

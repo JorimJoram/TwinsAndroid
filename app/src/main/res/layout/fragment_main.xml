@@ -208,15 +208,24 @@
 
             <TextView
                 android:id="@+id/main_recent_head"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="최근 관람 경기"
                 android:textColor="@color/black"
                 android:layout_marginStart="13dp"
                 android:layout_marginTop="20dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/main_winRate_container"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/main_winRate_container"/>
+
+            <TextView
+                android:id="@+id/main_recent_toMyGameList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="직관 리스트"
+                android:textColor="@color/twins_red"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/main_recent_head" />
 
             <include
                 android:id="@+id/main_recent_gameRecord"

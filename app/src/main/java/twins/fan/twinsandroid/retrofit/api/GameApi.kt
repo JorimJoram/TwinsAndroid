@@ -39,4 +39,6 @@ interface GameApi {
     fun getAnswerList(@Query("date") gameDate: String): Call<List<Answer>>
     @GET("/game/api/result-list")
     fun getUserGameResult(@Query("username")username: String): Call<List<String>>
+    @GET("/game/api/my-list")
+    fun getMyGameRecord(@Query("username")username: String): Call<List<GameRecord>>
 }

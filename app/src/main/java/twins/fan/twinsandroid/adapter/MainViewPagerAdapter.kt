@@ -12,6 +12,7 @@ class MainViewPagerAdapter(
 ):RecyclerView.Adapter<MainViewPagerAdapter.ViewHolder>() {
     inner class ViewHolder(val view:View): RecyclerView.ViewHolder(view){
         val textView = view.findViewById<TextView>(R.id.recycle_item_content)!!
+        val headText = view.findViewById<TextView>(R.id.recycle_item_title)!!
     }
 
     override fun getItemViewType(position: Int): Int = position%viewList.size
@@ -25,6 +26,7 @@ class MainViewPagerAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = viewList[position%viewList.size]
+        holder.headText.text = item
         holder.textView.text = item
     }
 

@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -28,7 +29,7 @@ import twins.fan.twinsandroid.util.scoreLocate
 import twins.fan.twinsandroid.util.toFormattedDate
 import twins.fan.twinsandroid.viewmodel.GameViewModel
 class GameListAdapter(
-    private val fragment:GameSearchFragment,
+    private val fragment:Fragment,
     private val context: Context,
     private val gameList: List<GameRecord>,
     private val userVisitList: List<String>

@@ -29,6 +29,7 @@ import twins.fan.twinsandroid.data.game.TotalDetailRecord
 import twins.fan.twinsandroid.databinding.FragmentMainBinding
 import twins.fan.twinsandroid.fragment.main.game.GameDetailFragment
 import twins.fan.twinsandroid.fragment.main.game.GameSearchFragment
+import twins.fan.twinsandroid.fragment.main.game.MyGameListFragment
 import twins.fan.twinsandroid.fragment.main.game.TeamRecordFragment
 import twins.fan.twinsandroid.util.checkLogo
 import twins.fan.twinsandroid.util.pitchResult
@@ -58,8 +59,9 @@ class MainFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.mainWinRateContainer.setOnClickListener(goSearch)
+        binding.mainRecentToGameList.setOnClickListener(goSearch)
         binding.mainGameToRecord.setOnClickListener(toGameDetail)
+        binding.mainRecentToMyGameList.setOnClickListener(toMyGameList)
         Glide.with(requireContext())
             .load(R.raw.twins)
             .into(binding.mainWinRateTeamImage) //TODO("라이프사이클 확인하고 충분한 근거를 가지고 배치해주시기 바랍니다.222222")
@@ -82,7 +84,7 @@ class MainFragment : Fragment() {
         removeOpenedFragment()
     }
     private fun setHeadViewPager(){
-        binding.mainViewPager.adapter = MainViewPagerAdapter(listOf("test1", "test2"))
+        binding.mainViewPager.adapter = MainViewPagerAdapter(listOf("일정 확인하러 가기", "직관 기록 자세히!"))
         binding.mainViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
     }
 
@@ -203,6 +205,13 @@ class MainFragment : Fragment() {
         val gameSearchFragment = GameSearchFragment()
         transaction!!.replace(R.id.main_frameLayout, gameSearchFragment)
         transaction.addToBackStack("GAME_SEARCH")
+        transaction.commitAllowingStateLoss()
+    }
+    private val toMyGameList = OnClickListener {
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        val myGameListFragment = MyGameListFragment()
+        transaction!!.replace(R.id.main_frameLayout, myGameListFragment)
+        transaction.addToBackStack("MY_GAME_LIST")
         transaction.commitAllowingStateLoss()
     }
 
