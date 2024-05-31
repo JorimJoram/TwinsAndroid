@@ -18,9 +18,15 @@ import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.data.account.AccountImage
 import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.databinding.FragmentMyAccountBinding
+import twins.fan.twinsandroid.fragment.main.game.MyGameListFragment
 import twins.fan.twinsandroid.fragment.main.my.ChangeInfoFragment
+import twins.fan.twinsandroid.fragment.main.my.MyAnswerFragment
 import twins.fan.twinsandroid.util.CacheClear
+import twins.fan.twinsandroid.util.setRecentDateFormat
+import twins.fan.twinsandroid.util.toFormattedDate
 import twins.fan.twinsandroid.viewmodel.AccountViewModel
+import twins.fan.twinsandroid.viewmodel.GallViewModel
+import twins.fan.twinsandroid.viewmodel.GameViewModel
 
 class MyAccountFragment : Fragment() {
     private lateinit var binding:FragmentMyAccountBinding
@@ -28,6 +34,8 @@ class MyAccountFragment : Fragment() {
 
     private val userInfo = AuthenticationInfo.getInstance()
     private val accountViewModel = AccountViewModel()
+    private val gameViewModel = GameViewModel()
+    private val gallViewModel = GallViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,11 +44,6 @@ class MyAccountFragment : Fragment() {
         accountImage = AccountImage.getInstance()
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_account, container, false)
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setAccountInfo()
     }
 
     override fun onStart() {
@@ -54,6 +57,16 @@ class MyAccountFragment : Fragment() {
             Glide.with(requireContext()).load(BuildConfig.myUrl+accountImage.path).into(binding.accountProfileAccountImage)
 
         binding.accountProfileChangeButton.setOnClickListener(toChangeProfile)
+        binding.accountProfileGame.setOnClickListener(toGameList)
+        binding.accountProfileGallAmount.setOnClickListener(toMyGallery)
+        binding.accountProfileAnswerAmount.setOnClickListener(toMyAnswer)
+    }
+
+    private val toGameList = OnClickListener {
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.main_frameLayout,MyGameListFragment())
+        transaction.addToBackStack("MY_GAME_LIST")
+        transaction.commitAllowingStateLoss()
     }
 
     private val toChangeProfile = OnClickListener {
@@ -63,16 +76,50 @@ class MyAccountFragment : Fragment() {
         transaction.commit()
     }
 
+    private val toMyAnswer = OnClickListener {
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.main_frameLayout, MyAnswerFragment())
+        transaction.addToBackStack("ACCOUNT_ANSWER")
+        transaction.commit()
+    }
+
+    private val toMyGallery = OnClickListener {  }
     override fun onResume() {
         super.onResume()
         val bottomBar = activity?.findViewById<BottomNavigationView>(R.id.main_bottom_nav)
         bottomBar?.menu?.findItem(R.id.menu_account)?.isChecked = true
+
+        setAccountInfo()
+        setVisitGame()
+        setGallAmount()
+        setAnswerAmount()
     }
 
     private fun setAccountInfo(){
         lifecycleScope.launch {
             val account = accountViewModel.getAccountByUsername(userInfo.username!!)!!
             binding.accountProfileUsername.text = account.username
+        }
+    }
+
+    private fun setVisitGame(){
+        lifecycleScope.launch{
+            val recentGameDate = gameViewModel.getRecentUserVisit(userInfo.username!!)!!
+            binding.accountProfileGame.text = setRecentDateFormat(recentGameDate.gameDate)
+        }
+    }
+
+    private fun setGallAmount(){
+        lifecycleScope.launch {
+            val cnt = gallViewModel.getMyGalleryAmount(userInfo.username!!)
+            binding.accountProfileGallAmount.text = cnt.toString()
+        }
+    }
+
+    private fun setAnswerAmount(){
+        lifecycleScope.launch {
+            val cnt = gallViewModel.getMyAnswerAmount(userInfo.username!!)
+            binding.accountProfileAnswerAmount.text = cnt.toString()
         }
     }
 }

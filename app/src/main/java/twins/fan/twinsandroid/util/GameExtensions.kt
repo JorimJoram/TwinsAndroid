@@ -97,3 +97,8 @@ fun pitchResult(winner:String, loser:String, homeScore:Int, visitScore:Int): Lis
     )
     return listOf(homeResult, visitResult)
 }
+
+fun setRecentDateFormat(gameDate:String): String {
+    val dateInfo = listOf(gameDate.substring(0,2), gameDate.substring(2,4), gameDate.substring(4,6))
+    return dateInfo.joinToString(separator = ".", limit = 3)
+}

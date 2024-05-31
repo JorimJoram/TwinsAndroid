@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
 import twins.fan.twinsandroid.R
-import twins.fan.twinsandroid.activity.MainActivity
 import twins.fan.twinsandroid.adapter.AnswerRecyclerAdapter
 import twins.fan.twinsandroid.adapter.GalleryDeleteListener
 import twins.fan.twinsandroid.data.account.AuthenticationInfo

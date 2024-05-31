@@ -102,6 +102,7 @@
 
                     <TextView
                         android:id="@+id/main_record_lose"
+                        android:layout_height="wrap_content"
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
                         android:layout_gravity="center"
@@ -167,7 +168,7 @@
                         android:layout_gravity="center"
                         android:text="2"
                         android:textAlignment="center"
-                        android:textSize="25sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/main_record_obp"
@@ -176,7 +177,7 @@
                         android:layout_gravity="center"
                         android:text="2"
                         android:textAlignment="center"
-                        android:textSize="25sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/main_record_slg"
@@ -185,8 +186,71 @@
                         android:layout_gravity="center"
                         android:text="2"
                         android:textAlignment="center"
-                        android:textSize="25sp" />
+                        android:textSize="18sp" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:layout_gravity="center"
+                        android:text=""
+                        android:textSize="25sp"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:layout_gravity="center"
+                        android:text="방어율"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:layout_gravity="center"
+                        android:text="WHIP"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:layout_gravity="center"
+                        android:text="K/9"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:layout_gravity="center"
+                        android:text="투수"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/main_record_era"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:layout_gravity="center"
+                        android:text="아직"
+                        android:textAlignment="center"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/main_record_whip"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:layout_gravity="center"
+                        android:text="준비중"
+                        android:textAlignment="center"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/main_record_kPer9"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:layout_gravity="center"
+                        android:text="ㅠ"
+                        android:textAlignment="center"
+                        android:textSize="18sp" />
 
                 </GridLayout>
 
@@ -221,7 +285,7 @@
                 android:id="@+id/main_recent_toMyGameList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="직관 리스트"
+                android:text="내가 다녀간 경기"
                 android:textColor="@color/twins_red"
                 android:layout_marginEnd="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -252,9 +316,9 @@
                 android:id="@+id/main_record_head"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="주요 선수 기록"
+                android:text="주요 타자 기록"
                 android:textColor="@color/black"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginStart="13dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/main_recent_toGameList"/>
@@ -282,6 +346,7 @@
                 app:lottie_autoPlay="false"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/loading_lottie" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

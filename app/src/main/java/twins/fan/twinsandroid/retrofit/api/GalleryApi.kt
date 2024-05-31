@@ -20,13 +20,23 @@ interface GalleryApi {
     fun deleteById(@Query("id") id:Long): Call<Void>
     @POST("/gall/api/create")
     fun createGallery(@Body requestGallery: RequestGallery): Call<Gallery>
+    @GET("/gall/api/my-gall/cnt")
+    fun getMyGalleryAmount(@Query("username") username: String): Call<Int>
+    @GET("/gall/api/my-gall/list")
+    fun getMyGalleryList(@Query("username")username: String): Call<List<Gallery>>
+
 
     @GET("/gall/api/answer/list")
     fun getAnswerByGallId(@Query("id") id: Long): Call<List<Answer>>
     @GET("/gall/api/answer/cnt")
     fun getAnswerCntByGallId(@Query("id")id: Long): Call<Int>
+    @GET("/gall/api/my-answer/list")
+    fun getMyAnswerList(@Query("username")username:String): Call<List<Answer>>
+    @GET("/gall/api/my-answer/cnt")
+    fun getMyAnswerAmount(@Query("username")username:String): Call<Int>
     @POST("/gall/api/answer/create")
     fun createAnswer(@Body answer: Answer):Call<List<Answer>>
     @DELETE("/gall/api/answer/delete")
     fun deleteAnswer(@Query("answerId")answerId:Long, @Query("gallId")gallId:Long): Call<List<Answer>>
+
 }

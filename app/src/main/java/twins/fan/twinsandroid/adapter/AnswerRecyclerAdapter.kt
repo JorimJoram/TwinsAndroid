@@ -11,14 +11,14 @@ import twins.fan.twinsandroid.R
 import twins.fan.twinsandroid.data.account.AuthenticationInfo
 import twins.fan.twinsandroid.data.answer.Answer
 import twins.fan.twinsandroid.databinding.ItemAnswerBinding
+import twins.fan.twinsandroid.fragment.main.answer.AnswerFragment
 import twins.fan.twinsandroid.util.setCreateDateForm
-import twins.fan.twinsandroid.viewmodel.GameViewModel
 import kotlin.properties.Delegates
 
 class AnswerRecyclerAdapter(
     private val answerList:List<Answer>,
     private val context:Context,
-    private val deleteListener:GalleryDeleteListener
+    private val deleteListener: AnswerFragment?
 ): RecyclerView.Adapter<AnswerRecyclerAdapter.AnswerViewHolder>() {
     inner class AnswerViewHolder(val binding:ItemAnswerBinding):RecyclerView.ViewHolder(binding.root){
         private val userInfo = AuthenticationInfo.getInstance()
@@ -58,7 +58,7 @@ class AnswerRecyclerAdapter(
         holder.bind(answerList[position])
         holder.binding.answerItemDeleteButton.setOnClickListener {
             val beDeleteAnswer = answerList[position]
-            deleteListener.onDelete(beDeleteAnswer)
+            deleteListener?.onDelete(beDeleteAnswer)
         }
     }
 }
